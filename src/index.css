@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Cognitive Tech Color Palette */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-on-primary: var(--brand-on-primary);
+  --color-brand-background: var(--brand-background);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-on-surface: var(--brand-on-surface);
+  --color-brand-surface-variant: var(--brand-surface-variant);
+  --color-brand-outline: var(--brand-outline);
+  --color-brand-primary-container: var(--brand-primary-container);
+  --color-brand-surface-container: var(--brand-surface-container);
+  --color-brand-surface-container-low: var(--brand-surface-container-low);
+  --color-brand-surface-container-high: var(--brand-surface-container-high);
+  --color-brand-surface-container-highest: var(--brand-surface-container-highest);
+
+  --border-radius-lg: 0.5rem;
+  --border-radius-xl: 0.75rem;
+
+  --spacing-gutter: 20px;
+  --spacing-margin: 32px;
+}
+
+@layer base {
+  :root {
+    --brand-primary: #0f172a;
+    --brand-on-primary: #ffffff;
+    --brand-background: #f9f9f9;
+    --brand-surface: #f9f9f9;
+    --brand-on-surface: #1a1c1c;
+    --brand-surface-variant: #444655;
+    --brand-outline: #757687;
+    --brand-primary-container: #1032cf;
+    --brand-surface-container: #eeeeee;
+    --brand-surface-container-low: #f3f3f4;
+    --brand-surface-container-high: #e8e8e8;
+    --brand-surface-container-highest: #e2e2e2;
+  }
+
+  .dark {
+    --brand-primary: #f8fafc;
+    --brand-on-primary: #0f172a;
+    --brand-background: #050505;
+    --brand-surface: #0a0a0a;
+    --brand-on-surface: #f8fafc;
+    --brand-surface-variant: #94a3b8;
+    --brand-outline: #475569;
+    --brand-primary-container: #3b82f6;
+    --brand-surface-container: #18181b;
+    --brand-surface-container-low: #09090b;
+    --brand-surface-container-high: #27272a;
+    --brand-surface-container-highest: #3f3f46;
+  }
+
+  body {
+    @apply bg-brand-background text-brand-on-surface antialiased font-sans transition-colors duration-300;
+  }
+}
+
+@layer components {
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .drop-zone {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23C5C5D8FF' stroke-width='2' stroke-dasharray='8%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e2e2;
+    border-radius: 10px;
+  }
+
+  .glass-panel {
+    @apply bg-white/70 backdrop-blur-md;
+  }
+}
