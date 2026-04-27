@@ -197,7 +197,7 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
   };
 
   return (
-    <div className="flex h-screen bg-brand-background dark:bg-zinc-950 overflow-hidden relative">
+    <div className="flex h-screen w-full bg-brand-background dark:bg-zinc-950 overflow-hidden relative">
       {/* SideNavBar */}
       <aside 
         onClick={() => isSidebarCollapsed && setIsSidebarCollapsed(false)}
@@ -374,12 +374,12 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
       {/* Main Content Area */}
       <main 
         className={cn(
-          "flex-1 flex flex-col min-h-0 overflow-hidden relative bg-slate-50 dark:bg-zinc-950 transition-all duration-300 ease-in-out",
+          "flex-1 w-full flex flex-col min-h-0 overflow-hidden relative bg-slate-50 dark:bg-zinc-950 transition-all duration-300 ease-in-out",
           isSidebarCollapsed ? "lg:pl-20" : "lg:pl-64"
         )}
       >
-        {/* Top App Bar */}
-        <header className="h-16 w-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-slate-200 dark:border-zinc-800 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Top App Bar - Desktop Optimized */}
+        <header className="h-16 w-full bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md border-b border-slate-200 dark:border-zinc-800 sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10">
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setIsMobileMenuOpen(true)}
@@ -396,7 +396,7 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
           </div>
 
           <div className="flex items-center gap-1 sm:gap-4 flex-1 justify-end">
-            <div className="hidden md:block relative max-w-sm w-full mx-4" ref={searchRef}>
+            <div className="hidden md:block relative max-w-md lg:max-w-xl w-full mx-2 lg:mx-4" ref={searchRef}>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input 
@@ -558,8 +558,8 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
           </div>
         </header>
 
-        {/* Canvas Body */}
-        <div className="flex-1 overflow-y-auto">
+        {/* Canvas Body - Desktop Responsive */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
            <AnimatePresence mode="wait">
              <motion.div
                key={activeView}

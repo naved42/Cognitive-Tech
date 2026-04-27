@@ -9,11 +9,9 @@ import { initializeApp, getApps } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { spawn } from "child_process";
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import rateLimit from 'express-rate-limit';
 
 // Load Firebase Config safely
-// ... (rest of imports remains)
-
-// Start Python FastAPI server logic moved inside startServer()
 let firebaseConfig: any = {};
 const configPath = path.join(process.cwd(), 'firebase-applet-config.json');
 if (fs.existsSync(configPath)) {
@@ -30,11 +28,36 @@ if (getApps().length === 0 && firebaseConfig.projectId) {
 const app = express();
 const PORT = 3000;
 
-// Middleware to verify Admin status using Firebase
-const verifyAdmin = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  // Check if Firebase Admin is initialized
+// ============================================================
+// AUTH MIDDLEWARE
+// ============================================================
+
+/** Extracts and verifies Firebase ID token, attaches decoded user to req */
+const verifyAuth = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
   if (getApps().length === 0) {
-    console.warn("Firebase Admin not initialized. Skipping verification (DEV ONLY) or rejecting.");
+    return res.status(503).json({ error: "Authentication service unavailable" });
+  }
+
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: "Missing or invalid authorization header" });
+  }
+
+  const token = authHeader.split('Bearer ')[1];
+  try {
+    const decodedToken = await getAuth().verifyIdToken(token);
+    (req as any).user = decodedToken;
+    (req as any).userId = decodedToken.uid;
+    next();
+  } catch (error) {
+    console.error("Firebase auth error:", error);
+    res.status(401).json({ error: "Invalid identity token" });
+  }
+};
+
+/** Verifies admin status (uses custom claims or email fallback) */
+const verifyAdmin = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (getApps().length === 0) {
     return res.status(503).json({ error: "Authentication service unavailable" });
   }
 
@@ -48,21 +71,27 @@ const verifyAdmin = async (req: express.Request, res: express.Response, next: ex
     const auth = getAuth();
     const decodedToken = await auth.verifyIdToken(token);
     
-    // Strict email check for admin status
-    const isAdmin = decodedToken.email === 'muhammadnaveedalijatt786@gmail.com';
+    // Check custom claims first, fall back to email check
+    const isAdmin = decodedToken.admin === true || decodedToken.email === 'muhammadnaveedalijatt786@gmail.com';
 
     if (!isAdmin) {
       return res.status(403).json({ error: "Unauthorized. Admin privileges required." });
     }
     
     (req as any).user = decodedToken;
+    (req as any).userId = decodedToken.uid;
     next();
   } catch (error) {
     console.error("Firebase admin auth error:", error);
     res.status(401).json({ error: "Invalid identity token" });
   }
 };
-const upload = multer({ dest: 'uploads/' });
+
+// File upload with size limit (50MB max)
+const upload = multer({ 
+  dest: 'uploads/',
+  limits: { fileSize: 50 * 1024 * 1024 }
+});
 
 // In-memory state (Simulating a database)
 interface Dataset {
@@ -97,42 +126,197 @@ const db = {
 };
 
 async function startServer() {
-  app.use(express.json());
+  app.use(express.json({ limit: '10mb' }));
   
-  // Serve uploads directory
-  app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+  // ============================================================
+  // RATE LIMITING
+  // ============================================================
+  const apiLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { error: "Too many requests, please try again later." }
+  });
+  app.use('/api/', apiLimiter);
+
+  // Serve uploads directory with Content-Disposition to prevent XSS
+  app.use('/uploads', (req, res, next) => {
+    res.setHeader('Content-Disposition', 'attachment');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    next();
+  }, express.static(path.join(process.cwd(), 'uploads')));
 
   // Create uploads directory if it doesn't exist
   if (!fs.existsSync('uploads')) {
     fs.mkdirSync('uploads');
   }
 
-  // API: Profile Image Upload
-  app.post("/api/user/profile-image", upload.single('image'), async (req, res) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+  // ============================================================
+  // GEMINI AI PROXY (keeps API key server-side only)
+  // ============================================================
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
+  const GEMINI_MODEL = 'gemini-3-flash-preview';
 
+  const SYSTEM_INSTRUCTION = `You are an expert data analyst assistant. Your job is to help users understand their data through analysis, visualizations, and machine learning — clearly and efficiently.
+
+## Data & Input
+- Accept and analyze data from CSV, Excel, PDF, JSON, plain text, and SQL results.
+- When data is provided, immediately profile it: shape, column types, missing values, and a brief sample.
+- Flag data quality issues (nulls, duplicates, outliers, type mismatches) before proceeding.
+- Never invent, guess, or fabricate data values. Work only with what the user provides.
+
+## Analysis
+- Perform exploratory data analysis (EDA), descriptive statistics, correlation analysis, trend detection, hypothesis testing, segmentation, and time-series analysis as needed.
+- Choose the most appropriate method for the user's question. Briefly explain your choice.
+- Lead every response with the key insight — not the methodology.
+
+## Visualizations
+- Produce charts and tables when they add value beyond what text alone can convey.
+- Automatically select the best chart type for the data (trends → line chart, distributions → histogram, comparisons → bar chart, relationships → scatter plot).
+- Always include axis labels, titles, and legends. Annotate key findings directly on charts.
+- Do not produce a chart for simple, single-value answers.
+
+## Machine Learning & Modeling
+- Build and explain regression, classification, clustering, forecasting, and anomaly detection models as requested.
+- Always: explain why you chose the model, establish a baseline, use cross-validation, and report appropriate evaluation metrics (RMSE, F1, AUC, etc.).
+- Show feature importances or SHAP values to explain model behavior.
+- Warn the user about overfitting, data leakage, or class imbalance if detected.
+
+## Code
+- Do NOT show code unless the user explicitly asks for it.
+- When code is requested, provide complete, fully runnable Python code with all imports included.
+
+## Response Style
+- Be concise. No filler, no restating the question.
+- Always lead with the answer or key finding.
+- End complex analyses with 2–3 suggested next steps.
+- Never make up data or results. If the data is insufficient, say so clearly.`;
+
+  /** Server-side Gemini chat endpoint (non-streaming) */
+  app.post("/api/chat", verifyAuth, async (req, res) => {
+    try {
+      const { messages, agent } = req.body;
+      if (!messages || !Array.isArray(messages)) {
+        return res.status(400).json({ error: "messages array required" });
+      }
+
+      const { GoogleGenAI } = await import('@google/genai');
+      const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+
+      const formattedContents = messages
+        .filter((m: any) => m.role !== 'system')
+        .map((msg: any) => ({
+          role: msg.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: msg.content }]
+        }));
+
+      let systemPrompt = SYSTEM_INSTRUCTION;
+      if (agent) {
+        systemPrompt = `You are now acting as the "${agent}" agent. ${SYSTEM_INSTRUCTION}`;
+      }
+
+      const response = await ai.models.generateContent({
+        model: GEMINI_MODEL,
+        contents: formattedContents,
+        config: { systemInstruction: systemPrompt }
+      });
+
+      res.json({ text: response.text });
+    } catch (error: any) {
+      console.error("Gemini API Error:", error);
+      res.status(500).json({ error: "AI generation failed", details: error.message });
+    }
+  });
+
+  /** Server-side Gemini streaming endpoint */
+  app.post("/api/chat/stream", verifyAuth, async (req, res) => {
+    try {
+      const { messages, agent } = req.body;
+      if (!messages || !Array.isArray(messages)) {
+        return res.status(400).json({ error: "messages array required" });
+      }
+
+      const { GoogleGenAI } = await import('@google/genai');
+      const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
+
+      const formattedContents = messages
+        .filter((m: any) => m.role !== 'system')
+        .map((msg: any) => ({
+          role: msg.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: msg.content }]
+        }));
+
+      let systemPrompt = SYSTEM_INSTRUCTION;
+      if (agent) {
+        systemPrompt = `You are now acting as the "${agent}" agent. ${SYSTEM_INSTRUCTION}`;
+      }
+
+      // Set SSE headers
+      res.setHeader('Content-Type', 'text/event-stream');
+      res.setHeader('Cache-Control', 'no-cache');
+      res.setHeader('Connection', 'keep-alive');
+
+      const responseStream = await ai.models.generateContentStream({
+        model: GEMINI_MODEL,
+        contents: formattedContents,
+        config: { systemInstruction: systemPrompt }
+      });
+
+      for await (const chunk of responseStream) {
+        const text = chunk.text;
+        if (text) {
+          res.write(`data: ${JSON.stringify({ text })}\n\n`);
+        }
+      }
+      res.write(`data: [DONE]\n\n`);
+      res.end();
+    } catch (error: any) {
+      console.error("Gemini Streaming Error:", error);
+      if (!res.headersSent) {
+        res.status(500).json({ error: "AI streaming failed", details: error.message });
+      } else {
+        res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
+        res.end();
+      }
+    }
+  });
+
+  // ============================================================
+  // PROFILE IMAGE UPLOAD (with real token verification)
+  // ============================================================
+  app.post("/api/user/profile-image", verifyAuth, upload.single('image'), async (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: "No image provided" });
     }
 
-    // Return the relative URL
+    // Validate it's actually an image
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (req.file.mimetype && !allowedTypes.includes(req.file.mimetype)) {
+      fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: "Invalid file type. Only images allowed." });
+    }
+
     const imageUrl = `/uploads/${req.file.filename}`;
     res.json({ url: imageUrl });
   });
 
-  // Start Python FastAPI server as a child process (non-blocking)
+  // ============================================================
+  // PYTHON BACKEND (Windows-compatible)
+  // ============================================================
   const startPythonBackend = () => {
-    const tryStartPython = (cmd: string) => {
+    // On Windows, use 'python' first; on Unix, use 'python3' first
+    const primaryCmd = process.platform === 'win32' ? 'python' : 'python3';
+    const fallbackCmd = process.platform === 'win32' ? 'python3' : 'python';
+
+    const tryStartPython = (cmd: string, isFallback = false) => {
       console.log(`Checking and installing Python dependencies using ${cmd}...`);
       const install = spawn(cmd, ["-m", "pip", "install", "fastapi", "uvicorn", "pandas", "python-multipart"]);
 
       install.on("error", (err: any) => {
-        if (err.code === 'ENOENT' && cmd === 'python3') {
-          console.warn("python3 not found, trying 'python'...");
-          tryStartPython('python');
+        if (err.code === 'ENOENT' && !isFallback) {
+          console.warn(`${cmd} not found, trying '${fallbackCmd}'...`);
+          tryStartPython(fallbackCmd, true);
         } else {
           console.error(`Failed to start ${cmd} for pip install:`, err.message);
         }
@@ -160,7 +344,7 @@ async function startServer() {
     };
 
     try {
-      tryStartPython("python3");
+      tryStartPython(primaryCmd);
     } catch (e) {
       console.error("Critical error starting Python backend:", e);
     }
@@ -182,69 +366,60 @@ async function startServer() {
     }
   }));
 
-  // Health check for Node server
+  // ============================================================
+  // PUBLIC ENDPOINTS
+  // ============================================================
   app.get("/api/health", (req, res) => res.json({ status: "ok", node: true }));
 
-  // API: Dashboard Summary
-  app.get("/api/dashboard/summary", (req, res) => {
+  // ============================================================
+  // AUTHENTICATED ENDPOINTS
+  // ============================================================
+
+  // Dashboard Summary
+  app.get("/api/dashboard/summary", verifyAuth, (req, res) => {
+    const userId = (req as any).userId;
     res.json({
-      totalDatasets: db.datasets.length,
-      totalAnalyses: db.history.length,
-      recentAnalyses: db.history.slice(-5).reverse(),
-      storageUsed: "4.2 MB", // Mock value
+      totalDatasets: db.datasets.filter(d => !d.userId || d.userId === userId).length,
+      totalAnalyses: db.history.filter(h => !h.userId || h.userId === userId).length,
+      recentAnalyses: db.history.filter(h => !h.userId || h.userId === userId).slice(-5).reverse(),
+      storageUsed: "4.2 MB",
       healthScore: "98%"
     });
   });
 
-  // API: Get Datasets
-  app.get("/api/datasets", async (req, res) => {
-    const authHeader = req.headers.authorization;
-    let userId = 'anonymous';
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split('Bearer ')[1];
-      try {
-        const decodedToken = await getAuth().verifyIdToken(token);
-        userId = decodedToken.uid;
-      } catch (e) {}
-    }
-    // Filter datasets by userId
+  // Datasets - GET
+  app.get("/api/datasets", verifyAuth, (req, res) => {
+    const userId = (req as any).userId;
     const userDatasets = db.datasets.filter(d => !d.userId || d.userId === userId);
     res.json(userDatasets);
   });
 
-  // API: Delete Dataset
-  app.delete("/api/datasets/:id", (req, res) => {
+  // Datasets - DELETE (with ownership check)
+  app.delete("/api/datasets/:id", verifyAuth, (req, res) => {
+    const userId = (req as any).userId;
+    const dataset = db.datasets.find(d => d.id === req.params.id);
+    
+    if (!dataset) {
+      return res.status(404).json({ error: "Dataset not found" });
+    }
+    if (dataset.userId && dataset.userId !== userId) {
+      return res.status(403).json({ error: "You can only delete your own datasets" });
+    }
+
     db.datasets = db.datasets.filter(d => d.id !== req.params.id);
     res.json({ success: true });
   });
 
-  // API: Get History
-  app.get("/api/history", async (req, res) => {
-    const authHeader = req.headers.authorization;
-    let userId = 'anonymous';
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split('Bearer ')[1];
-      try {
-        const decodedToken = await getAuth().verifyIdToken(token);
-        userId = decodedToken.uid;
-      } catch (e) {}
-    }
-    // Filter history by userId if it's set in the record
+  // History - GET
+  app.get("/api/history", verifyAuth, (req, res) => {
+    const userId = (req as any).userId;
     const userHistory = db.history.filter(h => !h.userId || h.userId === userId);
     res.json(userHistory);
   });
 
-  // API: Save Analysis to History
-  app.post("/api/history", async (req, res) => {
-    const authHeader = req.headers.authorization;
-    let userId = 'anonymous';
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split('Bearer ')[1];
-      try {
-        const decodedToken = await getAuth().verifyIdToken(token);
-        userId = decodedToken.uid;
-      } catch (e) {}
-    }
+  // History - POST
+  app.post("/api/history", verifyAuth, (req, res) => {
+    const userId = (req as any).userId;
     const record: AnalysisRecord = {
       id: Date.now().toString(),
       ...req.body,
@@ -255,18 +430,9 @@ async function startServer() {
     res.json(record);
   });
 
-  // API: Delete History Item
-  app.delete("/api/history/:id", async (req, res) => {
-    const authHeader = req.headers.authorization;
-    let userId = 'anonymous';
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split('Bearer ')[1];
-      try {
-        const decodedToken = await getAuth().verifyIdToken(token);
-        userId = decodedToken.uid;
-      } catch (e) {}
-    }
-    
+  // History - DELETE (with ownership check)
+  app.delete("/api/history/:id", verifyAuth, (req, res) => {
+    const userId = (req as any).userId;
     const index = db.history.findIndex(h => h.id === req.params.id && (!h.userId || h.userId === userId));
     if (index !== -1) {
       db.history.splice(index, 1);
@@ -276,17 +442,9 @@ async function startServer() {
     }
   });
 
-  // API: File Upload
-  app.post("/api/upload", upload.single('file'), async (req, res) => {
-    const authHeader = req.headers.authorization;
-    let userId = 'anonymous';
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split('Bearer ')[1];
-      try {
-        const decodedToken = await getAuth().verifyIdToken(token);
-        userId = decodedToken.uid;
-      } catch (e) {}
-    }
+  // File Upload (authenticated)
+  app.post("/api/upload", verifyAuth, upload.single('file'), async (req, res) => {
+    const userId = (req as any).userId;
 
     if (!req.file) {
       return res.status(400).json({ error: "No file provided" });
@@ -305,6 +463,9 @@ async function startServer() {
         const workbook = xlsx.readFile(filePath);
         const sheetName = workbook.SheetNames[0];
         data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+      } else {
+        fs.unlinkSync(filePath);
+        return res.status(400).json({ error: "Unsupported file type. Use .csv, .xlsx, or .xls" });
       }
 
       fs.unlinkSync(filePath);
@@ -331,18 +492,30 @@ async function startServer() {
 
     } catch (err) {
       console.error(err);
+      // Clean up file if it still exists
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
       res.status(500).json({ error: "Failed to process file" });
     }
   });
 
-  // API: Settings
-  app.get("/api/settings", (req, res) => res.json(db.settings));
-  app.post("/api/settings", (req, res) => {
-    db.settings = { ...db.settings, ...req.body };
+  // Settings (authenticated)
+  app.get("/api/settings", verifyAuth, (req, res) => res.json(db.settings));
+  app.post("/api/settings", verifyAuth, (req, res) => {
+    // Only allow known keys
+    const allowedKeys = ['theme', 'model', 'autoLoad'];
+    const filtered: any = {};
+    for (const key of allowedKeys) {
+      if (req.body[key] !== undefined) {
+        filtered[key] = req.body[key];
+      }
+    }
+    db.settings = { ...db.settings, ...filtered };
     res.json(db.settings);
   });
 
-  // Admin Routes (Secured)
+  // ============================================================
+  // ADMIN ROUTES
+  // ============================================================
   app.get("/api/admin/stats", verifyAdmin, (req, res) => {
     res.json({
       activeUsers: 1,
@@ -360,7 +533,9 @@ async function startServer() {
     ]);
   });
 
-  // Boilerplate for Vite
+  // ============================================================
+  // VITE DEV SERVER
+  // ============================================================
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },

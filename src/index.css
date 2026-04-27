@@ -76,16 +76,19 @@
 }
 
 @layer components {
+  /* Grid Systems for Responsive Layouts */
   .bento-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
   }
 
+  /* Drop Zone */
   .drop-zone {
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23C5C5D8FF' stroke-width='2' stroke-dasharray='8%2c 12' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
   }
 
+  /* Custom Scrollbar */
   .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
   }
@@ -97,7 +100,19 @@
     border-radius: 10px;
   }
 
+  .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #52525b;
+  }
+
+  /* Glass Panel */
   .glass-panel {
     @apply bg-white/70 backdrop-blur-md;
+  }
+
+  .glass-panel-dark {
+    @apply bg-white/70 backdrop-blur-md;
+  }
+  .dark .glass-panel-dark {
+    @apply bg-zinc-900/50 backdrop-blur-md;
   }
 }

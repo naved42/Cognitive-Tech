@@ -95,16 +95,16 @@ export const TopBar = ({
   };
 
   return (
-    <header className="h-14 border-b border-[#E5E7EB] dark:border-zinc-800 bg-white dark:bg-[#050505] flex items-center justify-between px-4 sm:px-6 sticky top-0 z-40 transition-colors">
+    <header className="h-14 lg:h-16 border-b border-[#E5E7EB] dark:border-zinc-800 bg-white dark:bg-[#050505] flex items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10 sticky top-0 z-40 transition-colors">
       {/* Model Switcher */}
-      <div className="flex items-center gap-2 sm:gap-3 relative" ref={modelMenuRef}>
+      <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 relative" ref={modelMenuRef}>
         <Tooltip>
           <TooltipTrigger>
             <button 
               onClick={() => setShowModelMenu(!showModelMenu)}
               className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1.5 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-900 transition-all group border border-transparent hover:border-gray-100 dark:hover:border-zinc-800"
             >
-              <span className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100 leading-none truncate max-w-[80px] sm:max-w-none">
+              <span className="text-xs sm:text-sm lg:text-base font-semibold text-gray-900 dark:text-gray-100 leading-none truncate max-w-[80px] sm:max-w-[120px] lg:max-w-none">
                 {MODELS.find(m => m.id === activeModel)?.name || activeModel}
               </span>
               <ChevronDown className={cn("w-3.5 h-3.5 sm:w-4 h-4 text-gray-400 transition-transform", showModelMenu && "rotate-180")} />
@@ -161,8 +161,8 @@ export const TopBar = ({
         )}
       </div>
 
-      {/* Right Actions */}
-      <div className="flex items-center gap-4">
+      {/* Right Actions - Desktop Responsive */}
+      <div className="flex items-center gap-2 sm:gap-3 lg:gap-4">
         <div className="flex items-center gap-1">
           <Tooltip>
             <TooltipTrigger>

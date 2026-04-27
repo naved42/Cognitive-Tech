@@ -46,29 +46,29 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
 
   const renderHome = () => (
     <>
-      {/* Hero Section */}
-      <section className="px-6 py-12 lg:py-24 w-full flex flex-col lg:flex-row items-center gap-16 relative">
+      {/* Hero Section - Desktop Optimized */}
+      <section className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 xl:py-32 w-full flex flex-col lg:flex-row items-center gap-8 lg:gap-12 xl:gap-16 relative max-w-7xl mx-auto">
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="lg:w-1/2 space-y-8"
+          className="lg:w-1/2 space-y-6 sm:space-y-8"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
             <Sparkles className="w-3.5 h-3.5" />
-            <span className="text-xs font-bold uppercase tracking-wider">The Future of Data Science</span>
+            <span className="text-xs sm:text-xs font-bold uppercase tracking-wider">The Future of Data Science</span>
           </div>
-          <h1 className="text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-gray-900">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold leading-[1.05] tracking-tight text-gray-900">
             Your <span className="text-gradient">WhyAnalyst</span> is here.
           </h1>
-          <p className="text-lg text-brand-surface-variant max-w-lg leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-brand-surface-variant max-w-lg leading-relaxed">
             Connect your data sources and get professional-grade insights in seconds. Ask questions in plain English, and Julius handles the complex modeling, cleaning, and visualization.
           </p>
-          <div className="flex flex-wrap items-center gap-4 pt-4">
-            <button onClick={onAuth} className="bg-brand-primary text-white px-8 py-4 rounded-xl font-bold text-lg shadow-xl shadow-brand-primary/20 hover:-translate-y-1 active:scale-95 transition-all">
+          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4 pt-4">
+            <button onClick={onAuth} className="w-full sm:w-auto bg-brand-primary text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-xl shadow-brand-primary/20 hover:-translate-y-1 active:scale-95 transition-all">
               Start Analyzing Free
             </button>
-            <button onClick={onAuth} className="px-8 py-4 rounded-xl font-bold text-lg border border-slate-200 hover:bg-slate-50 transition-all flex items-center gap-2 group">
+            <button onClick={onAuth} className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg border border-slate-200 hover:bg-slate-50 transition-all flex items-center justify-center gap-2 group">
               View Live Demo
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
@@ -94,94 +94,96 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
         </motion.div>
       </section>
 
-      {/* Social Proof */}
-      <section className="bg-white border-y border-slate-100 py-12">
-        <div className="w-full px-6 flex flex-col md:flex-row items-center justify-between gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+      {/* Social Proof - Desktop Optimized */}
+      <section className="bg-white border-y border-slate-100 py-8 sm:py-12 lg:py-16">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 flex flex-col items-center justify-center gap-8">
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Trusted by teams at</span>
-          <div className="flex flex-wrap justify-center gap-12 lg:gap-24 items-center">
-            <div className="text-2xl font-black text-slate-800 tracking-tighter">TECHCORP</div>
-            <div className="text-2xl font-black text-brand-primary tracking-tighter">DATAFLOW</div>
-            <div className="text-2xl font-black text-slate-800 tracking-tighter">QUANTUM</div>
-            <div className="text-2xl font-black text-slate-800 tracking-tighter">SPHERION</div>
+          <div className="flex flex-wrap justify-center gap-8 sm:gap-12 lg:gap-16 xl:gap-24 items-center w-full max-w-5xl">
+            <div className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-800 tracking-tighter">TECHCORP</div>
+            <div className="text-xl sm:text-2xl lg:text-3xl font-black text-brand-primary tracking-tighter">DATAFLOW</div>
+            <div className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-800 tracking-tighter">QUANTUM</div>
+            <div className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-800 tracking-tighter">SPHERION</div>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section id="features" className="px-6 py-24 w-full">
-        <div className="text-center mb-16 space-y-4">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl font-bold text-gray-900"
-          >
-            Precision Tools for Modern Teams
-          </motion.h2>
-          <p className="text-brand-surface-variant text-lg max-w-2xl mx-auto">
-            Stop wrestling with spreadsheets. Let AI do the heavy lifting with specialized engines designed for statistical rigor.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Features Grid - Desktop Optimized */}
+      <section id="features" className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 xl:py-32 w-full">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20 space-y-4">
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-gray-900"
+            >
+              Precision Tools for Modern Teams
+            </motion.h2>
+            <p className="text-brand-surface-variant text-base sm:text-lg lg:text-xl max-w-3xl mx-auto">
+              Stop wrestling with spreadsheets. Let AI do the heavy lifting with specialized engines designed for statistical rigor.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 xl:gap-10">
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-white p-10 rounded-2xl border border-slate-100 hover:shadow-xl hover:border-brand-primary/20 transition-all"
+            className="bg-white p-8 sm:p-10 lg:p-12 rounded-2xl border border-slate-100 hover:shadow-xl hover:border-brand-primary/20 transition-all h-full"
           >
             <div className="bg-brand-primary/10 text-brand-primary w-14 h-14 flex items-center justify-center rounded-xl mb-6">
               <Cloud className="w-7 h-7" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Connect Anything</h3>
-            <p className="text-brand-surface-variant leading-relaxed">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-3">Connect Anything</h3>
+            <p className="text-sm sm:text-base text-brand-surface-variant leading-relaxed">
               Seamlessly ingest data from CSV, Excel, SQL databases, and cloud storage providers with one secure click.
             </p>
           </motion.div>
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-white p-10 rounded-2xl border border-slate-100 hover:shadow-xl hover:border-brand-primary/20 transition-all"
+            className="bg-white p-8 sm:p-10 lg:p-12 rounded-2xl border border-slate-100 hover:shadow-xl hover:border-brand-primary/20 transition-all h-full"
           >
             <div className="bg-blue-50 text-blue-600 w-14 h-14 flex items-center justify-center rounded-xl mb-6">
               <MessageSquare className="w-7 h-7" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Natural Language</h3>
-            <p className="text-brand-surface-variant leading-relaxed">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-3">Natural Language</h3>
+            <p className="text-sm sm:text-base text-brand-surface-variant leading-relaxed">
               Ask questions like "Which channel had the highest ROI?" and get instant complex data interpretations.
             </p>
           </motion.div>
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-white p-10 rounded-2xl border border-slate-100 hover:shadow-xl hover:border-brand-primary/20 transition-all"
+            className="bg-white p-8 sm:p-10 lg:p-12 rounded-2xl border border-slate-100 hover:shadow-xl hover:border-brand-primary/20 transition-all h-full"
           >
             <div className="bg-emerald-50 text-emerald-600 w-14 h-14 flex items-center justify-center rounded-xl mb-6">
               <BarChart className="w-7 h-7" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-3">Automated Visuals</h3>
-            <p className="text-brand-surface-variant leading-relaxed">
+            <h3 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900 mb-3">Automated Visuals</h3>
+            <p className="text-sm sm:text-base text-brand-surface-variant leading-relaxed">
               Beautiful, publication-ready charts and reports generated automatically to tell your data's true story.
             </p>
           </motion.div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      {/* Use Cases / Industries */}
-      <section id="use-cases" className="bg-slate-900 py-24 text-white overflow-hidden">
-        <div className="w-full px-6">
-          <div className="flex flex-col lg:flex-row gap-20 items-center">
-            <div className="lg:w-2/5 space-y-8">
+    {/* Use Cases / Industries - Desktop Optimized */}
+      <section id="use-cases" className="bg-slate-900 py-12 sm:py-16 lg:py-24 xl:py-32 text-white overflow-hidden">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-20 items-center max-w-7xl mx-auto">
+            <div className="lg:w-2/5 space-y-6 sm:space-y-8">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/80 border border-white/10">
                 <Globe className="w-3.5 h-3.5" />
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em]">Industry Solutions</span>
               </div>
-              <h2 className="text-4xl lg:text-5xl font-bold leading-tight">Cognitive Intelligence for Every Vertical</h2>
-              <p className="text-slate-400 text-lg leading-relaxed">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">Cognitive Intelligence for Every Vertical</h2>
+              <p className="text-slate-400 text-base sm:text-lg lg:text-xl leading-relaxed">
                 Empower your enterprise with specialized AI agents tailored for high-stakes decision making across finance, healthcare, and research.
               </p>
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 bg-brand-primary/20 rounded-lg flex items-center justify-center shrink-0">
                     <TrendingUp className="w-5 h-5 text-brand-primary" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg">Financial Analysis</h4>
+                    <h4 className="font-bold text-base sm:text-lg lg:text-xl">Financial Analysis</h4>
                     <p className="text-slate-500 text-sm">Real-time sentiment analysis and predictive risk modeling for global markets.</p>
                   </div>
                 </div>
@@ -190,7 +192,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                     <Stethoscope className="w-5 h-5 text-emerald-500" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg">Healthcare Insights</h4>
+                    <h4 className="font-bold text-base sm:text-lg lg:text-xl">Healthcare Insights</h4>
                     <p className="text-slate-500 text-sm">Bridge global clinical data to predict patient outcomes with genomic pattern recognition.</p>
                   </div>
                 </div>
@@ -199,13 +201,13 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                     <Network className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg">Research Acceleration</h4>
+                    <h4 className="font-bold text-base sm:text-lg lg:text-xl">Research Acceleration</h4>
                     <p className="text-slate-500 text-sm">Synthesize complex multi-gigabyte datasets for academic or market breakthroughs.</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="lg:w-3/5 grid grid-cols-2 gap-4 relative">
+            <div className="lg:w-3/5 grid grid-cols-2 gap-3 sm:gap-4 lg:gap-6 relative">
               <motion.div 
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
