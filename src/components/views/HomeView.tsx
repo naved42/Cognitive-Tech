@@ -69,11 +69,13 @@ interface HomeViewProps {
 
 export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
   const { getToken, user } = useAuth();
+  const userId = user?.uid;
   const [input, setInput] = React.useState(initialPrompt || '');
-  // Restore messages from localStorage on mount
+  // Restore messages from localStorage on mount (user-scoped)
   const [messages, setMessages] = React.useState<ChatMessage[]>(() => {
     try {
-      const saved = localStorage.getItem('ct_chat_messages');
+      const key = userId ? `ct_chat_messages_${userId}` : 'ct_chat_messages';
+      const saved = localStorage.getItem(key);
       if (saved) {
         const parsed = JSON.parse(saved);
         return parsed.map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) }));
@@ -83,9 +85,12 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
   });
   const [isLoading, setIsLoading] = React.useState(false);
   const [isAdvancedReasoning, setIsAdvancedReasoning] = React.useState(false);
-  // Restore tokens from localStorage (default 20)
+  // Restore tokens from localStorage (default 20, user-scoped)
   const [tokens, setTokens] = React.useState<number>(() => {
-    try { return parseInt(localStorage.getItem('ct_tokens') || '20', 10); } catch { return 20; }
+    try {
+      const key = userId ? `ct_tokens_${userId}` : 'ct_tokens';
+      return parseInt(localStorage.getItem(key) || '20', 10);
+    } catch { return 20; }
   });
   const [isUploading, setIsUploading] = React.useState(false);
   const [isRecording, setIsRecording] = React.useState(false);
@@ -120,11 +125,12 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
   React.useEffect(() => {
     const checkRateLimit = () => {
       try {
-        const history = JSON.parse(localStorage.getItem('ct_msg_history') || '[]');
+        const key = userId ? `ct_msg_history_${userId}` : 'ct_msg_history';
+        const history = JSON.parse(localStorage.getItem(key) || '[]');
         const oneHourAgo = Date.now() - 3600000;
         const recent = history.filter((ts: number) => ts > oneHourAgo);
         setRecentMessagesCount(recent.length);
-        localStorage.setItem('ct_msg_history', JSON.stringify(recent));
+        localStorage.setItem(key, JSON.stringify(recent));
       } catch {
         setRecentMessagesCount(0);
       }
@@ -132,7 +138,7 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
     checkRateLimit();
     const interval = setInterval(checkRateLimit, 60000); // Check every minute
     return () => clearInterval(interval);
-  }, [messages]);
+  }, [messages, userId]);
 
   // Suggested Prompts
   const suggestedPrompts = [
@@ -153,26 +159,30 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
     { label: 'Report', icon: FileText, color: 'text-red-500', prompt: 'Compose a professional report summarizing key findings from ' },
   ];
 
-  // Persist messages to localStorage whenever they change
+  // Persist messages to localStorage whenever they change (user-scoped)
   React.useEffect(() => {
     try {
-      localStorage.setItem('ct_chat_messages', JSON.stringify(messages));
+      const key = userId ? `ct_chat_messages_${userId}` : 'ct_chat_messages';
+      localStorage.setItem(key, JSON.stringify(messages));
     } catch {}
-  }, [messages]);
+  }, [messages, userId]);
 
-  // Persist tokens to localStorage whenever they change
+  // Persist tokens to localStorage whenever they change (user-scoped)
   React.useEffect(() => {
     try {
-      localStorage.setItem('ct_tokens', tokens.toString());
+      const key = userId ? `ct_tokens_${userId}` : 'ct_tokens';
+      localStorage.setItem(key, tokens.toString());
     } catch {}
-  }, [tokens]);
-  // Persist active tools and connectors to localStorage
+  }, [tokens, userId]);
+  // Persist active tools and connectors to localStorage (user-scoped)
   React.useEffect(() => {
     try {
-      localStorage.setItem('ct_active_tools', JSON.stringify(activeTools));
-      localStorage.setItem('ct_active_connectors', JSON.stringify(activeConnectors));
+      const toolsKey = userId ? `ct_active_tools_${userId}` : 'ct_active_tools';
+      const connectorsKey = userId ? `ct_active_connectors_${userId}` : 'ct_active_connectors';
+      localStorage.setItem(toolsKey, JSON.stringify(activeTools));
+      localStorage.setItem(connectorsKey, JSON.stringify(activeConnectors));
     } catch {}
-  }, [activeTools, activeConnectors]);
+  }, [activeTools, activeConnectors, userId]);
 
   React.useEffect(() => {
     if (initialPrompt) {
@@ -460,12 +470,13 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
     setInput('');
     setIsLoading(true);
 
-    // Track for rate limiting
+    // Track for rate limiting (user-scoped)
     if (!isPro) {
       try {
-        const history = JSON.parse(localStorage.getItem('ct_msg_history') || '[]');
+        const key = userId ? `ct_msg_history_${userId}` : 'ct_msg_history';
+        const history = JSON.parse(localStorage.getItem(key) || '[]');
         history.push(Date.now());
-        localStorage.setItem('ct_msg_history', JSON.stringify(history));
+        localStorage.setItem(key, JSON.stringify(history));
         setRecentMessagesCount(history.length);
       } catch {}
     }
@@ -558,9 +569,12 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
     if (window.confirm("Are you sure you want to clear this conversation?")) {
       setMessages([]);
       setInput('');
-      localStorage.removeItem('ct_chat_messages');
-      localStorage.removeItem('ct_active_tools');
-      localStorage.removeItem('ct_active_connectors');
+      const chatMsgKey = userId ? `ct_chat_messages_${userId}` : 'ct_chat_messages';
+      const toolsKey = userId ? `ct_active_tools_${userId}` : 'ct_active_tools';
+      const connectorsKey = userId ? `ct_active_connectors_${userId}` : 'ct_active_connectors';
+      localStorage.removeItem(chatMsgKey);
+      localStorage.removeItem(toolsKey);
+      localStorage.removeItem(connectorsKey);
       toast.info("Conversation cleared.");
     }
   };

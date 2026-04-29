@@ -41,6 +41,7 @@ import {
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useAuth } from '../../hooks/useAuth';
+import { useTheme } from '../../hooks/useTheme';
 import { 
   Tooltip,
   TooltipContent,
@@ -72,6 +73,7 @@ interface Connector {
 
 export const ConnectDataView = () => {
   const { getToken, user } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [connectingSource, setConnectingSource] = useState<Connector | null>(null);
   const [isSyncing, setIsSyncing] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -80,7 +82,6 @@ export const ConnectDataView = () => {
   const [showCustomNodeModal, setShowCustomNodeModal] = useState(false);
   const [syncStatus, setSyncStatus] = useState({ latency: 120, capacity: 88, lastSync: '4 minutes ago' });
   const [activeTab, setActiveTab] = useState<'connectors' | 'activity'>('connectors');
-  const [isDark, setIsDark] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
 
@@ -99,15 +100,6 @@ export const ConnectDataView = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
-
-  // Toggle theme logic
-  useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDark]);
 
   // Handle Disconnect
   const handleDisconnect = (id: string, name: string) => {
@@ -295,10 +287,10 @@ export const ConnectDataView = () => {
 
         <div className="flex items-center gap-3 self-end md:self-auto relative">
           <button 
-            onClick={() => setIsDark(!isDark)}
+            onClick={toggleTheme}
             className="p-3 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-sm hover:translate-y-[-2px] transition-all"
           >
-            {isDark ? <Sun className="w-5 h-5 text-amber-500" /> : <Moon className="w-5 h-5 text-slate-600" />}
+            {theme === 'dark' ? <Sun className="w-5 h-5 text-amber-500" /> : <Moon className="w-5 h-5 text-slate-600" />}
           </button>
           
           <div className="relative">

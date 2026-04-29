@@ -207,9 +207,63 @@ interface AnalysisRecord {
   userId?: string;
 }
 
+// ============================================================
+// PERSISTENT STORAGE
+// ============================================================
+const DATA_DIR = path.join(process.cwd(), '.data');
+const HISTORY_FILE = path.join(DATA_DIR, 'history.json');
+const DATASETS_FILE = path.join(DATA_DIR, 'datasets.json');
+
+// Ensure data directory exists
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
+
+// Load data from persistent storage
+function loadHistoryData(): AnalysisRecord[] {
+  try {
+    if (fs.existsSync(HISTORY_FILE)) {
+      const data = fs.readFileSync(HISTORY_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Error loading history:', error);
+  }
+  return [];
+}
+
+function loadDatasetsData(): Dataset[] {
+  try {
+    if (fs.existsSync(DATASETS_FILE)) {
+      const data = fs.readFileSync(DATASETS_FILE, 'utf8');
+      return JSON.parse(data);
+    }
+  } catch (error) {
+    console.error('Error loading datasets:', error);
+  }
+  return [];
+}
+
+// Save data to persistent storage
+function saveHistoryData(history: AnalysisRecord[]) {
+  try {
+    fs.writeFileSync(HISTORY_FILE, JSON.stringify(history, null, 2));
+  } catch (error) {
+    console.error('Error saving history:', error);
+  }
+}
+
+function saveDatasetsData(datasets: Dataset[]) {
+  try {
+    fs.writeFileSync(DATASETS_FILE, JSON.stringify(datasets, null, 2));
+  } catch (error) {
+    console.error('Error saving datasets:', error);
+  }
+}
+
 const db = {
-  datasets: [] as Dataset[],
-  history: [] as AnalysisRecord[],
+  datasets: loadDatasetsData(),
+  history: loadHistoryData(),
   settings: {
     theme: 'dark',
     model: 'gemini-2.5-flash',
@@ -396,8 +450,10 @@ async function startServer() {
   });
 
   // Datasets - GET (public)
-  app.get("/api/datasets", (req, res) => {
-    res.json(db.datasets);
+  app.get("/api/datasets", verifyAuth, (req, res) => {
+    const userId = (req as any).userId;
+    const userDatasets = db.datasets.filter(d => d.userId === userId);
+    res.json(userDatasets);
   });
 
   // Datasets - DELETE (with ownership check)
@@ -413,12 +469,15 @@ async function startServer() {
     }
 
     db.datasets = db.datasets.filter(d => d.id !== req.params.id);
+    saveDatasetsData(db.datasets);
     res.json({ success: true });
   });
 
-  // History - GET (public)
-  app.get("/api/history", (req, res) => {
-    res.json(db.history);
+  // History - GET (requires auth, filters by userId)
+  app.get("/api/history", verifyAuth, (req, res) => {
+    const userId = (req as any).userId;
+    const userHistory = db.history.filter(h => h.userId === userId);
+    res.json(userHistory);
   });
 
   // History - POST
@@ -431,15 +490,17 @@ async function startServer() {
       timestamp: new Date().toISOString()
     };
     db.history.push(record);
+    saveHistoryData(db.history);
     res.json(record);
   });
 
   // History - DELETE (with ownership check)
   app.delete("/api/history/:id", verifyAuth, (req, res) => {
     const userId = (req as any).userId;
-    const index = db.history.findIndex(h => h.id === req.params.id && (!h.userId || h.userId === userId));
+    const index = db.history.findIndex(h => h.id === req.params.id && h.userId === userId);
     if (index !== -1) {
       db.history.splice(index, 1);
+      saveHistoryData(db.history);
       res.json({ success: true });
     } else {
       res.status(404).json({ error: "History item not found or unauthorized" });
@@ -492,6 +553,7 @@ async function startServer() {
       };
 
       db.datasets.push(newDataset);
+      saveDatasetsData(db.datasets);
       res.json(newDataset);
 
     } catch (err) {

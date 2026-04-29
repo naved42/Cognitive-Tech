@@ -433,11 +433,11 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
               <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mx-2">
                 <p className="font-bold text-slate-900 text-sm mb-1">Upgrade Plan</p>
                 <p className="text-[10px] text-slate-500 mb-3 font-medium">Get advanced reasoning & higher limits.</p>
-                <button className="w-full bg-slate-900 text-white text-[10px] font-bold py-2 rounded-lg active:scale-[0.95] transition-transform">Upgrade now</button>
+                <button disabled className="w-full bg-slate-300 text-slate-500 text-[10px] font-bold py-2 rounded-lg cursor-not-allowed">Upgrade now</button>
               </div>
             ) : (
               <div className="flex justify-center">
-                <button className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-white shadow-lg active:scale-90 transition-transform">
+                <button disabled className="w-10 h-10 rounded-xl bg-slate-300 flex items-center justify-center text-slate-500 shadow-lg cursor-not-allowed">
                   <Sparkles className="w-4 h-4" />
                 </button>
               </div>

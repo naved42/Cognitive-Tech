@@ -72,19 +72,34 @@
     --brand-surface-container-highest: #e2e2e2;
   }
 
+  .light {
+    --brand-primary: #0f172a;
+    --brand-on-primary: #ffffff;
+    --brand-background: #f9f9f9;
+    --brand-surface: #f9f9f9;
+    --brand-on-surface: #1a1c1c;
+    --brand-surface-variant: #444655;
+    --brand-outline: #757687;
+    --brand-primary-container: #1032cf;
+    --brand-surface-container: #eeeeee;
+    --brand-surface-container-low: #f3f3f4;
+    --brand-surface-container-high: #e8e8e8;
+    --brand-surface-container-highest: #e2e2e2;
+  }
+
   .dark {
-    --brand-primary: #f8fafc;
+    --brand-primary: #f0f4f8;
     --brand-on-primary: #0f172a;
-    --brand-background: #050505;
-    --brand-surface: #0a0a0a;
-    --brand-on-surface: #f8fafc;
-    --brand-surface-variant: #94a3b8;
-    --brand-outline: #475569;
-    --brand-primary-container: #3b82f6;
-    --brand-surface-container: #18181b;
-    --brand-surface-container-low: #09090b;
-    --brand-surface-container-high: #27272a;
-    --brand-surface-container-highest: #3f3f46;
+    --brand-background: #0f1117;
+    --brand-surface: #161b22;
+    --brand-on-surface: #e6edf3;
+    --brand-surface-variant: #c9d1d9;
+    --brand-outline: #30363d;
+    --brand-primary-container: #58a6ff;
+    --brand-surface-container: #21262d;
+    --brand-surface-container-low: #0d1117;
+    --brand-surface-container-high: #30363d;
+    --brand-surface-container-highest: #484f58;
   }
 
   body {

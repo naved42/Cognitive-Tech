@@ -244,7 +244,8 @@ export const SettingsView = ({ initialTab = 'preferences', onNavigate }: Setting
                        </div>
                        <Button 
                          onClick={handleUpgradeClick}
-                         className="bg-white text-indigo-600 hover:bg-white/90 rounded-2xl h-12 px-8 text-[10px] font-black uppercase tracking-widest shadow-xl transition-all hover:scale-105"
+                         disabled={userTier !== 'pro'}
+                         className={userTier === 'pro' ? "bg-white text-indigo-600 hover:bg-white/90 rounded-2xl h-12 px-8 text-[10px] font-black uppercase tracking-widest shadow-xl transition-all hover:scale-105" : "bg-gray-300 text-gray-500 cursor-not-allowed rounded-2xl h-12 px-8 text-[10px] font-black uppercase tracking-widest shadow-xl"}
                        >
                           {userTier === 'pro' ? 'Revert to Free' : 'Instant Upgrade to PRO'}
                        </Button>
@@ -361,3 +362,4 @@ export const SettingsView = ({ initialTab = 'preferences', onNavigate }: Setting
     </div>
   );
 };
+

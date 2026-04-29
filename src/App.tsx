@@ -34,6 +34,15 @@ export default function App() {
   
   const [showAuthOverlay, setShowAuthOverlay] = useState(false);
 
+  // Force light mode for landing page
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (!user) {
+      root.classList.remove('dark');
+      root.classList.add('light');
+    }
+  }, [user]);
+
   // Role-based auto-navigation for administrators on login
   useEffect(() => {
     if (user && isAdmin && activeTab === 'dashboard') {
@@ -93,41 +102,43 @@ export default function App() {
 
   if (!user) {
     return (
-      <ReactLenis root options={{ lerp: 0.075, wheelMultiplier: 1.2, touchMultiplier: 2 }}>
-        <MemoizedLandingPage onAuth={handleAuthOverlayOpen} />
-        <AnimatePresence mode="wait">
-          {showAuthOverlay && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-              onClick={handleAuthOverlayClose}
-            >
+      <div className="light">
+        <ReactLenis root options={{ lerp: 0.075, wheelMultiplier: 1.2, touchMultiplier: 2 }}>
+          <MemoizedLandingPage onAuth={handleAuthOverlayOpen} />
+          <AnimatePresence mode="wait">
+            {showAuthOverlay && (
               <motion.div 
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-md relative"
+                className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+                onClick={handleAuthOverlayClose}
               >
-                <div className="absolute -top-12 right-0">
-                  <button 
-                    onClick={handleAuthOverlayClose}
-                    className="p-2 text-white/70 hover:text-white transition-colors"
-                  >
-                    <X className="w-6 h-6" />
-                  </button>
-                </div>
-                <MemoizedAuthModal />
+                <motion.div 
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.95, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-full max-w-md relative"
+                >
+                  <div className="absolute -top-12 right-0">
+                    <button 
+                      onClick={handleAuthOverlayClose}
+                      className="p-2 text-white/70 hover:text-white transition-colors"
+                    >
+                      <X className="w-6 h-6" />
+                    </button>
+                  </div>
+                  <MemoizedAuthModal />
+                </motion.div>
               </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        <Toaster />
-      </ReactLenis>
+            )}
+          </AnimatePresence>
+          <Toaster />
+        </ReactLenis>
+      </div>
     );
   }
 
