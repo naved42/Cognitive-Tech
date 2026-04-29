@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import dotenv from 'dotenv';
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { createServer as createViteServer } from "vite";
 import multer from "multer";
 import path from "path";
@@ -110,21 +110,27 @@ if (fs.existsSync(configPath)) {
 }
 
 // Initialize Firebase Admin
-if (getApps().length === 0 && firebaseConfig.projectId) {
-  initializeApp({
-    projectId: firebaseConfig.projectId,
-  });
+try {
+  if (getApps().length === 0 && firebaseConfig?.projectId) {
+    initializeApp({
+      projectId: firebaseConfig.projectId,
+    });
+  }
+} catch (e) {
+  console.log("Firebase init skipped");
 }
-
 const app = express();
-const PORT = 3000;
-
+const PORT = parseInt(process.env.PORT || "8080");
 // ============================================================
 // AUTH MIDDLEWARE
 // ============================================================
 
 /** Extracts and verifies Firebase ID token, attaches decoded user to req */
-const verifyAuth = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+const verifyAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   if (getApps().length === 0) {
     return res.status(503).json({ error: "Authentication service unavailable" });
   }
@@ -147,7 +153,7 @@ const verifyAuth = async (req: express.Request, res: express.Response, next: exp
 };
 
 /** Verifies admin status (uses custom claims or email fallback) */
-const verifyAdmin = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+const verifyAdmin = async (req: express.Request, res: Response, next: express.NextFunction) => {
   if (getApps().length === 0) {
     return res.status(503).json({ error: "Authentication service unavailable" });
   }
@@ -409,8 +415,6 @@ async function startServer() {
     }
   };
 
-  startPythonBackend();
-
   // Proxy to Python FastAPI backend
   app.use('/api/python', createProxyMiddleware({
     target: 'http://127.0.0.1:8000',
@@ -421,7 +425,7 @@ async function startServer() {
     on: {
       error: (err, req, res) => {
         console.error('Proxy to Python failed:', err.message);
-        if (res instanceof express.response.constructor) {
+        if (!res.headersSent){
           (res as express.Response).status(502).json({ error: 'Python analysis engine is offline' });
         }
       }
@@ -602,7 +606,7 @@ async function startServer() {
   // ============================================================
   // VITE DEV SERVER
   // ============================================================
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV === "development") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -617,8 +621,12 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
   });
 }
+console.log("Booting application...");
 
-startServer();
+startServer().catch((err) => {
+  console.error("Fatal startup error:", err);
+  process.exit(1);
+});
