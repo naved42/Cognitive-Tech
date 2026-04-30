@@ -19,6 +19,10 @@ steps:
       - '--region'
       - 'asia-south1'
       - '--allow-unauthenticated'
+      - '--port=8080'
+      - '--cpu=2'
+      - '--memory=1Gi'
+      - '--timeout=300'
 
 images:
   - 'gcr.io/$PROJECT_ID/whyanalyst'
