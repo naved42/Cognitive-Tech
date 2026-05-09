@@ -1,15 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  signInWithPopup, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword,
-  updateProfile,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  signOut as firebaseSignOut
-} from 'firebase/auth';
-import { auth, googleProvider } from '../../lib/firebase';
+import { getAuth, getGoogleProvider } from '../../lib/firebase';
 import { LogIn, UserPlus, Mail, Lock, Loader2, Chrome, RefreshCw, ArrowLeft } from 'lucide-react';
 import { Button } from '../ui/button';
 import { toast } from 'sonner';
@@ -52,13 +43,12 @@ export const AuthModal = () => {
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
-      const result = await signInWithPopup(auth, googleProvider);
+      const auth = await getAuth();
+      const provider = await getGoogleProvider();
+      const { signInWithPopup } = await import('firebase/auth');
+      const result = await signInWithPopup(auth, provider);
       
-      // Google accounts are pre-verified, so we mark them as verified
-      // if Firebase hasn't already done so (rare case)
       if (!result.user.emailVerified) {
-        // For Google OAuth, we can force mark as verified since Google verified the email
-        // Reload user to get updated verification status
         await result.user.reload();
       }
       
@@ -87,7 +77,6 @@ export const AuthModal = () => {
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validation
     if (!email || !password) {
       toast.error("Email and password are required");
       return;
@@ -105,6 +94,14 @@ export const AuthModal = () => {
     
     setLoading(true);
     try {
+      const auth = await getAuth();
+      const { 
+        signInWithEmailAndPassword, 
+        createUserWithEmailAndPassword, 
+        updateProfile, 
+        sendEmailVerification 
+      } = await import('firebase/auth');
+
       if (isLogin) {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         
@@ -128,7 +125,6 @@ export const AuthModal = () => {
           }
         }
         
-        // Send verification email
         try {
           await sendEmailVerification(userCredential.user);
           setVerificationSent(true);
@@ -167,6 +163,7 @@ export const AuthModal = () => {
   };
 
   const handleResendVerification = async () => {
+    const auth = await getAuth();
     if (!auth.currentUser) {
       toast.error("No user found");
       return;
@@ -174,6 +171,7 @@ export const AuthModal = () => {
     
     setLoading(true);
     try {
+      const { sendEmailVerification } = await import('firebase/auth');
       await sendEmailVerification(auth.currentUser);
       toast.success("Verification email sent! Check your inbox and spam folder.");
     } catch (error: any) {
@@ -186,6 +184,8 @@ export const AuthModal = () => {
 
   const handleSignOutFromVerification = async () => {
     try {
+      const auth = await getAuth();
+      const { signOut: firebaseSignOut } = await import('firebase/auth');
       await firebaseSignOut(auth);
       setVerificationSent(false);
       setPendingEmail('');
@@ -209,6 +209,8 @@ export const AuthModal = () => {
     
     setLoading(true);
     try {
+      const auth = await getAuth();
+      const { sendPasswordResetEmail } = await import('firebase/auth');
       await sendPasswordResetEmail(auth, resetEmail);
       toast.success("Password reset email sent! Check your inbox.");
       setResetEmail('');

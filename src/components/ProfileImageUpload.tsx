@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import { Camera, Upload, Loader2, User } from 'lucide-react';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
-import { updateProfile } from 'firebase/auth';
 import { useAuth } from '../hooks/useAuth';
 import { apiUpload } from '../lib/apiClient';
 
@@ -48,6 +47,7 @@ export const ProfileImageUpload = ({ currentPhotoURL }: { currentPhotoURL?: stri
       if (!imageUrl) throw new Error("No URL returned from server");
       
       // Update Firebase Auth profile
+      const { updateProfile } = await import('firebase/auth');
       await updateProfile(user, {
         photoURL: imageUrl
       });

@@ -1,6 +1,15 @@
-import { GoogleGenAI } from "@google/genai";
+// Service to interact with Google Gemini AI
+// Optimized for lazy loading
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let _ai: any = null;
+
+async function getAI() {
+  if (!_ai) {
+    const { GoogleGenAI } = await import("@google/genai");
+    _ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  }
+  return _ai;
+}
 
 export async function getAIMentorFeedback(
   columnName: string,
@@ -8,7 +17,7 @@ export async function getAIMentorFeedback(
   preprocessingStep: string
 ) {
   const prompt = `
-    You are the "AI Mentor" for CleanSlate AI, a data science education platform.
+    You are the "AI Mentor" for WhyAnalyst, a data analysis platform.
     A student is preprocessing the column "${columnName}" using "${preprocessingStep}".
     
     Column Statistics:
@@ -24,6 +33,7 @@ export async function getAIMentorFeedback(
   `;
 
   try {
+    const ai = await getAI();
     const response = await ai.models.generateContent({
       model: "gemini-1.5-flash",
       contents: prompt,
@@ -86,6 +96,7 @@ export async function askAIMentor(
   `;
 
   try {
+    const ai = await getAI();
     const response = await ai.models.generateContent({
       model: modelToUse,
       contents: prompt,

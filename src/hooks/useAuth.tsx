@@ -1,11 +1,6 @@
 import { useState, useEffect, useContext, createContext, useMemo } from 'react';
-import { 
-  onAuthStateChanged, 
-  signOut as firebaseSignOut, 
-  User,
-  getIdToken
-} from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import type { User } from 'firebase/auth';
+import { getAuth } from '../lib/firebase';
 
 interface AuthContextType {
   user: User | null;
@@ -35,11 +30,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    let unsubscribe: () => void;
+    
+    // Defer initialization to after first paint
+    const initAuth = async () => {
+      try {
+        const auth = await getAuth();
+        const { onAuthStateChanged } = await import('firebase/auth');
+        
+        unsubscribe = onAuthStateChanged(auth, (user) => {
+          setUser(user);
+          setLoading(false);
+        });
+      } catch (err) {
+        console.error('Auth initialization failed:', err);
+        setLoading(false);
+      }
+    };
+
+    // Use requestIdleCallback or a timeout to ensure main thread is free
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(() => initAuth());
+    } else {
+      setTimeout(initAuth, 100);
+    }
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const isAdmin = useMemo(() => {
@@ -48,21 +66,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const isEmailVerified = useMemo(() => {
     if (!user) return false;
-    // Google OAuth accounts are always verified (pre-verified by Google)
     const isGoogleAccount = user.providerData?.some((provider: any) => provider.providerId === 'google.com');
     return user.emailVerified || !!isGoogleAccount;
   }, [user]);
 
   const signOut = async () => {
+    const auth = await getAuth();
+    const { signOut: firebaseSignOut } = await import('firebase/auth');
     await firebaseSignOut(auth);
   };
 
   const getToken = async () => {
     if (!user) return null;
+    const { getIdToken } = await import('firebase/auth');
     return await getIdToken(user);
   };
 
   const refreshUser = async () => {
+    const auth = await getAuth();
     if (auth.currentUser) {
       await auth.currentUser.reload();
       setUser({ ...auth.currentUser });

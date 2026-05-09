@@ -2,11 +2,13 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { useTheme } from './hooks/useTheme';
 import { useAuth } from './hooks/useAuth';
-import { Toaster } from 'sonner';
 import { TooltipProvider } from './components/ui/tooltip';
 import { Loader2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ReactLenis } from 'lenis/react';
+
+// Toaster — deferred, not needed until a notification fires
+const LazyToaster = React.lazy(() => import('sonner').then(m => ({ default: m.Toaster })));
 
 // LAZY LOADING COMPONENTS: Prevents massive initial bundle
 const Workspace = React.lazy(() => import('./components/Workspace').then(m => ({ default: m.Workspace })));
@@ -54,12 +56,32 @@ export default function App() {
     }
   }, [user]);
 
+  // Lazy load Umami analytics
+  useEffect(() => {
+    const loadUmami = () => {
+      if (document.querySelector('script[src*="umami.is"]')) return;
+      const script = document.createElement('script');
+      script.async = true;
+      script.defer = true;
+      script.src = "https://cloud.umami.is/script.js";
+      script.setAttribute('data-website-id', "ed2e8d56-5170-404d-8f30-ecb3c07da500");
+      document.head.appendChild(script);
+    };
+
+    if (window.status === 'complete') {
+      loadUmami();
+    } else {
+      window.addEventListener('load', loadUmami);
+      return () => window.removeEventListener('load', loadUmami);
+    }
+  }, []);
+
   // Role-based auto-navigation for administrators on login
   useEffect(() => {
     if (user && isAdmin && activeTab === 'dashboard') {
       setActiveTab('admin');
     }
-  }, [isAdmin, !!user]);
+  }, [isAdmin, !!user, activeTab]);
 
   // Keyboard shortcut for search - optimized with useCallback
   // Move handleKeyDown outside useEffect and wrap with useCallback
@@ -149,7 +171,7 @@ export default function App() {
               )}
             </AnimatePresence>
           </React.Suspense>
-          <Toaster />
+          <React.Suspense fallback={null}><LazyToaster /></React.Suspense>
         </ReactLenis>
       </div>
     );
@@ -183,7 +205,7 @@ export default function App() {
     <ReactLenis root options={{ lerp: 0.075, wheelMultiplier: 1.2, touchMultiplier: 2 }}>
       <TooltipProvider>
         <div className="flex h-screen w-full bg-brand-background overflow-hidden selection:bg-brand-primary/10 transition-colors">
-          <Toaster position="top-right" richColors />
+          <React.Suspense fallback={null}><LazyToaster position="top-right" richColors /></React.Suspense>
           <React.Suspense fallback={<LoadingFallback />}>
             <MemoizedWorkspace 
               user={user} 
