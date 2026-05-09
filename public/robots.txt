@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Block private/internal routes
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /*?*
+
+# Sitemaps
+Sitemap: https://whyanalyst.com/sitemap.xml

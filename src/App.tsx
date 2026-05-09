@@ -1,19 +1,30 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { cn } from '@/lib/utils';
 import { useTheme } from './hooks/useTheme';
-import { Workspace } from './components/Workspace';
 import { useAuth } from './hooks/useAuth';
-import { AuthModal } from './components/auth/AuthModal';
-import { LandingPage } from './components/LandingPage';
 import { Toaster } from 'sonner';
 import { TooltipProvider } from './components/ui/tooltip';
 import { Loader2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ReactLenis } from 'lenis/react';
 
+// LAZY LOADING COMPONENTS: Prevents massive initial bundle
+const Workspace = React.lazy(() => import('./components/Workspace').then(m => ({ default: m.Workspace })));
+const LandingPage = React.lazy(() => import('./components/LandingPage').then(m => ({ default: m.LandingPage })));
+const AuthModal = React.lazy(() => import('./components/auth/AuthModal').then(m => ({ default: m.AuthModal })));
+
 const MemoizedWorkspace = React.memo(Workspace);
 const MemoizedLandingPage = React.memo(LandingPage);
 const MemoizedAuthModal = React.memo(AuthModal);
+
+const LoadingFallback = () => (
+  <div className="h-screen w-full flex items-center justify-center bg-white dark:bg-[#050505]">
+    <div className="space-y-4 text-center">
+      <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mx-auto" />
+      <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">Loading Module...</p>
+    </div>
+  </div>
+);
 
 export default function App() {
   const { theme, toggleTheme } = useTheme();
@@ -104,38 +115,40 @@ export default function App() {
     return (
       <div className="light">
         <ReactLenis root options={{ lerp: 0.075, wheelMultiplier: 1.2, touchMultiplier: 2 }}>
-          <MemoizedLandingPage onAuth={handleAuthOverlayOpen} />
-          <AnimatePresence mode="wait">
-            {showAuthOverlay && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-                onClick={handleAuthOverlayClose}
-              >
+          <React.Suspense fallback={<LoadingFallback />}>
+            <MemoizedLandingPage onAuth={handleAuthOverlayOpen} />
+            <AnimatePresence mode="wait">
+              {showAuthOverlay && (
                 <motion.div 
-                  initial={{ scale: 0.95, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  exit={{ scale: 0.95, opacity: 0 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  onClick={(e) => e.stopPropagation()}
-                  className="w-full max-w-md relative"
+                  className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+                  onClick={handleAuthOverlayClose}
                 >
-                  <div className="absolute -top-12 right-0">
-                    <button 
-                      onClick={handleAuthOverlayClose}
-                      className="p-2 text-white/70 hover:text-white transition-colors"
-                    >
-                      <X className="w-6 h-6" />
-                    </button>
-                  </div>
-                  <MemoizedAuthModal />
+                  <motion.div 
+                    initial={{ scale: 0.95, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.95, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="w-full max-w-md relative"
+                  >
+                    <div className="absolute -top-12 right-0">
+                      <button 
+                        onClick={handleAuthOverlayClose}
+                        className="p-2 text-white/70 hover:text-white transition-colors"
+                      >
+                        <X className="w-6 h-6" />
+                      </button>
+                    </div>
+                    <MemoizedAuthModal />
+                  </motion.div>
                 </motion.div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              )}
+            </AnimatePresence>
+          </React.Suspense>
           <Toaster />
         </ReactLenis>
       </div>
@@ -171,10 +184,12 @@ export default function App() {
       <TooltipProvider>
         <div className="flex h-screen w-full bg-brand-background overflow-hidden selection:bg-brand-primary/10 transition-colors">
           <Toaster position="top-right" richColors />
-          <MemoizedWorkspace 
-            user={user} 
-            onLogout={signOut} 
-          />
+          <React.Suspense fallback={<LoadingFallback />}>
+            <MemoizedWorkspace 
+              user={user} 
+              onLogout={signOut} 
+            />
+          </React.Suspense>
         </div>
       </TooltipProvider>
     </ReactLenis>

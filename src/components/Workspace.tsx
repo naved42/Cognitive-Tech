@@ -33,28 +33,30 @@ import {
   Moon,
   Clock,
   CloudUpload,
-  ListTodo
+  ListTodo,
+  Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '../hooks/useTheme';
 import { useAuth } from '../hooks/useAuth';
 import { apiGet } from '../lib/apiClient';
 import { toast } from 'sonner';
-import { FilesView } from './views/FilesView';
-import { DatabasesView } from './views/DatabasesView';
-import { CustomAgentsView } from './views/CustomAgentsView';
-import { ConnectDataView } from './views/ConnectDataView';
-import { NotebooksView } from './views/NotebooksView';
-import { NotebookTemplatesView } from './views/NotebookTemplatesView';
-import { CommunityView } from './views/CommunityView';
-import { HomeView } from './views/HomeView';
-import { ContactView } from './views/ContactView';
-import { TodoView } from './views/TodoView';
+// LAZY LOADING VIEWS: Each view only loads its own dependencies when activated
+const FilesView = React.lazy(() => import('./views/FilesView').then(m => ({ default: m.FilesView })));
+const DatabasesView = React.lazy(() => import('./views/DatabasesView').then(m => ({ default: m.DatabasesView })));
+const CustomAgentsView = React.lazy(() => import('./views/CustomAgentsView').then(m => ({ default: m.CustomAgentsView })));
+const ConnectDataView = React.lazy(() => import('./views/ConnectDataView').then(m => ({ default: m.ConnectDataView })));
+const NotebooksView = React.lazy(() => import('./views/NotebooksView').then(m => ({ default: m.NotebooksView })));
+const NotebookTemplatesView = React.lazy(() => import('./views/NotebookTemplatesView').then(m => ({ default: m.NotebookTemplatesView })));
+const CommunityView = React.lazy(() => import('./views/CommunityView').then(m => ({ default: m.CommunityView })));
+const HomeView = React.lazy(() => import('./views/HomeView').then(m => ({ default: m.HomeView })));
+const ContactView = React.lazy(() => import('./views/ContactView').then(m => ({ default: m.ContactView })));
+const TodoView = React.lazy(() => import('./views/TodoView').then(m => ({ default: m.TodoView })));
+const SettingsView = React.lazy(() => import('./SettingsView').then(m => ({ default: m.SettingsView })));
+const HistoryView = React.lazy(() => import('./views/HistoryView').then(m => ({ default: m.HistoryView })));
 
-import { SettingsView } from './SettingsView';
-import { HistoryView } from './views/HistoryView';
 import { ReactLenis } from 'lenis/react';
-import { InteractiveRobot } from './InteractiveRobot';
+const InteractiveRobot = React.lazy(() => import('./InteractiveRobot').then(m => ({ default: m.InteractiveRobot })));
 
 interface WorkspaceProps {
   user: any;
@@ -675,7 +677,13 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
                transition={{ duration: 0.2 }}
                className="min-h-full w-full"
              >
-                {renderActiveView()}
+                <React.Suspense fallback={
+                  <div className="h-full w-full flex items-center justify-center p-12">
+                    <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+                  </div>
+                }>
+                  {renderActiveView()}
+                </React.Suspense>
              </motion.div>
            </AnimatePresence>
         </ReactLenis>

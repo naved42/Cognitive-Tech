@@ -1,4 +1,3 @@
-import * as XLSX from "xlsx";
 import Papa from "papaparse";
 
 export interface DataAuditReport {
@@ -39,6 +38,7 @@ export async function generateAudit(file: File): Promise<{ report: DataAuditRepo
     });
     data = result.data.filter((row: any) => Object.values(row).some(v => v !== null && v !== undefined));
   } else if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
+    const XLSX = await import('xlsx');
     const arrayBuffer = await file.arrayBuffer();
     const workbook = XLSX.read(arrayBuffer);
     const firstSheetName = workbook.SheetNames[0];
@@ -48,7 +48,7 @@ export async function generateAudit(file: File): Promise<{ report: DataAuditRepo
     data = data.map(row => {
       const newRow: any = {};
       for (const key in row) {
-        const value = row[key];
+        const value = (row as any)[key];
         if (typeof value === 'string') {
           const val = value.trim().toLowerCase();
           if (val === 'n/a' || val === 'na' || val === 'null') {

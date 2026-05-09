@@ -1,6 +1,6 @@
 import React from 'react';
-import Plot from 'react-plotly.js';
-import { Download, Copy, Play, CheckCircle2, AlertCircle } from 'lucide-react';
+const Plot = React.lazy(() => import('react-plotly.js'));
+import { Download, Copy, Play, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface ChartProps {
@@ -26,21 +26,23 @@ export const ChatPlotly = ({ data, layout, title }: ChartProps) => {
           <Download className="w-3.5 h-3.5" />
         </button>
       </div>
-      <div className="w-full overflow-hidden rounded-xl bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800">
-        <Plot
-          data={data}
-          layout={{
-            ...layout,
-            autosize: true,
-            margin: { t: 30, r: 20, b: 40, l: 40 },
-            paper_bgcolor: 'rgba(0,0,0,0)',
-            plot_bgcolor: 'rgba(0,0,0,0)',
-            font: { family: 'Inter, sans-serif', size: 10, color: '#64748b' }
-          }}
-          useResizeHandler={true}
-          style={{ width: '100%', height: '300px' }}
-          config={{ displayModeBar: false }}
-        />
+      <div className="w-full overflow-hidden rounded-xl bg-white dark:bg-zinc-900 border border-slate-100 dark:border-zinc-800 min-h-[300px] flex items-center justify-center">
+        <React.Suspense fallback={<Loader2 className="w-6 h-6 animate-spin text-indigo-500" />}>
+          <Plot
+            data={data}
+            layout={{
+              ...layout,
+              autosize: true,
+              margin: { t: 30, r: 20, b: 40, l: 40 },
+              paper_bgcolor: 'rgba(0,0,0,0)',
+              plot_bgcolor: 'rgba(0,0,0,0)',
+              font: { family: 'Inter, sans-serif', size: 10, color: '#64748b' }
+            }}
+            useResizeHandler={true}
+            style={{ width: '100%', height: '300px' }}
+            config={{ displayModeBar: false }}
+          />
+        </React.Suspense>
       </div>
     </div>
   );

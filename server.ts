@@ -12,6 +12,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { spawn } from "child_process";
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import rateLimit from 'express-rate-limit';
+import { SEO_PAGES, renderSeoPage } from './src/seo/seo-pages.js';
 
 // Load environment variables
 const envLocalPath = path.join(process.cwd(), '.env.local');
@@ -120,7 +121,7 @@ try {
   console.log("Firebase init skipped");
 }
 const app = express();
-const PORT = parseInt(process.env.PORT || "8080");
+const PORT = parseInt(process.env.PORT || "3000");
 // ============================================================
 // AUTH MIDDLEWARE
 // ============================================================
@@ -167,14 +168,14 @@ const verifyAdmin = async (req: express.Request, res: Response, next: express.Ne
   try {
     const auth = getAuth();
     const decodedToken = await auth.verifyIdToken(token);
-    
+
     // Check custom claims first, fall back to email check
     const isAdmin = decodedToken.admin === true || decodedToken.email === 'muhammadnaveedalijatt786@gmail.com';
 
     if (!isAdmin) {
       return res.status(403).json({ error: "Unauthorized. Admin privileges required." });
     }
-    
+
     (req as any).user = decodedToken;
     (req as any).userId = decodedToken.uid;
     next();
@@ -185,7 +186,7 @@ const verifyAdmin = async (req: express.Request, res: Response, next: express.Ne
 };
 
 // File upload with size limit (50MB max)
-const upload = multer({ 
+const upload = multer({
   dest: 'uploads/',
   limits: { fileSize: 50 * 1024 * 1024 }
 });
@@ -279,9 +280,9 @@ const db = {
 
 async function startServer() {
   console.log("📝 Setting up Express middleware...");
-  
+
   app.use(express.json({ limit: '10mb' }));
-  
+
   // ============================================================
   // RATE LIMITING
   // ============================================================
@@ -337,7 +338,7 @@ async function startServer() {
       // For now, we simulate streaming by sending the full response as one chunk
       // to fix the 404 and "Unknown error".
       const text = await runAI(messages);
-      
+
       const chunk = JSON.stringify({ text });
       res.write(`data: ${chunk}\n\n`);
       res.write(`data: [DONE]\n\n`);
@@ -422,7 +423,7 @@ async function startServer() {
   app.delete("/api/datasets/:id", verifyAuth, (req, res) => {
     const userId = (req as any).userId;
     const dataset = db.datasets.find(d => d.id === req.params.id);
-    
+
     if (!dataset) {
       return res.status(404).json({ error: "Dataset not found" });
     }
@@ -562,9 +563,21 @@ async function startServer() {
   });
 
   // ============================================================
+  // SEO LANDING PAGES (server-rendered for Googlebot)
+  // ============================================================
+  for (const page of SEO_PAGES) {
+    app.get(`/${page.slug}`, (req, res) => {
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+      res.send(renderSeoPage(page));
+    });
+  }
+
+  // ============================================================
   // VITE DEV SERVER
   // ============================================================
-  if (process.env.NODE_ENV === "development") {
+  const mode = process.env.NODE_ENV || "development";
+  if (mode === "development") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",

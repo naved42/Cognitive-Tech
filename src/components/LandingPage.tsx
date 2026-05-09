@@ -65,10 +65,10 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
             <span className="text-xs sm:text-xs font-bold uppercase tracking-wider">The Future of Data Science</span>
           </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold leading-[1.05] tracking-tight text-brand-on-surface">
-            Your <span className="text-gradient">WhyAnalyst</span> is here.
+            <span className="text-gradient">AI Data Analysis Tool</span>
           </h1>
           <p className="text-base sm:text-lg lg:text-xl text-brand-surface-variant max-w-lg leading-relaxed">
-            Connect your data sources and get professional-grade insights in seconds. Ask questions in plain English, and Julius handles the complex modeling, cleaning, and visualization.
+            Chat with CSV and Excel files using AI. Ask questions in plain English and get charts, insights, and reports in seconds.
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4 pt-4">
             <button 
@@ -543,8 +543,8 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
             onClick={() => switchView('home')} 
             className="text-xl font-bold tracking-tight text-brand-on-surface flex items-center gap-2 cursor-pointer"
           >
-            <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-black text-sm">W</div>
-            WhyAnalyst
+            <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-black text-[10px]">AI</div>
+            AI Data Analysis Tool
           </div>
           <div className="hidden md:flex space-x-8">
             <button 
@@ -615,7 +615,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
             <div className="relative z-10 space-y-8 max-w-3xl mx-auto py-8">
               <h2 className="text-5xl lg:text-6xl font-bold leading-tight">Ready to unlock your data's full potential?</h2>
               <p className="text-lg opacity-80 leading-relaxed">
-                Join over 50,000 analysts using WhyAnalyst to accelerate their research and automate decision-making.
+                Join over 50,000 analysts using this AI data analysis tool to accelerate their research and automate decision-making.
               </p>
               <div className="pt-8">
                 <button 
@@ -637,8 +637,8 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
         <div className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12">
           <div className="col-span-2 space-y-6">
             <div className="text-2xl font-bold text-slate-900 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-black text-sm">W</div>
-              WhyAnalyst
+              <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-black text-[10px]">AI</div>
+              AI Data Analysis Tool
             </div>
             <p className="text-slate-500 max-w-xs leading-relaxed">
               Automating data analysis for enterprise teams. Unlock insights from millions of data points across any industry.
@@ -670,7 +670,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           </div>
         </div>
         <div className="w-full pt-20 flex flex-col md:flex-row justify-between items-center gap-6 text-slate-400 text-xs font-medium border-t border-slate-100 mt-20">
-          <span>© 2024 WhyAnalyst Platform. All rights reserved.</span>
+          <span>© 2024 AI Data Analysis Tool. All rights reserved.</span>
           <div className="flex gap-8">
             <a href="#" className="hover:text-slate-600 transition-colors">Privacy</a>
             <a href="#" className="hover:text-slate-600 transition-colors">Terms</a>
