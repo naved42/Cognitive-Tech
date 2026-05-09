@@ -4,20 +4,15 @@ import { useTheme } from './hooks/useTheme';
 import { useAuth } from './hooks/useAuth';
 import { TooltipProvider } from './components/ui/tooltip';
 import { Loader2, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ReactLenis } from 'lenis/react';
+import { motion, AnimatePresence, LazyMotion, domAnimation } from 'motion/react';
 
 // Toaster — deferred, not needed until a notification fires
 const LazyToaster = React.lazy(() => import('sonner').then(m => ({ default: m.Toaster })));
 
-// LAZY LOADING COMPONENTS: Prevents massive initial bundle
+// LAZY LOADING COMPONENTS
 const Workspace = React.lazy(() => import('./components/Workspace').then(m => ({ default: m.Workspace })));
 const LandingPage = React.lazy(() => import('./components/LandingPage').then(m => ({ default: m.LandingPage })));
 const AuthModal = React.lazy(() => import('./components/auth/AuthModal').then(m => ({ default: m.AuthModal })));
-
-const MemoizedWorkspace = React.memo(Workspace);
-const MemoizedLandingPage = React.memo(LandingPage);
-const MemoizedAuthModal = React.memo(AuthModal);
 
 const LoadingFallback = () => (
   <div className="h-screen w-full flex items-center justify-center bg-white dark:bg-[#050505]">
@@ -83,8 +78,6 @@ export default function App() {
     }
   }, [isAdmin, !!user, activeTab]);
 
-  // Keyboard shortcut for search - optimized with useCallback
-  // Move handleKeyDown outside useEffect and wrap with useCallback
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
@@ -97,7 +90,6 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  // Effect: When active dataset changes, update context
   useEffect(() => {
     if (activeDatasetId) {
       fetch('/api/datasets')
@@ -133,12 +125,12 @@ export default function App() {
     );
   }
 
-  if (!user) {
-    return (
-      <div className="light">
-        <ReactLenis root options={{ lerp: 0.075, wheelMultiplier: 1.2, touchMultiplier: 2 }}>
+  const renderContent = () => {
+    if (!user) {
+      return (
+        <div className="light">
           <React.Suspense fallback={<LoadingFallback />}>
-            <MemoizedLandingPage onAuth={handleAuthOverlayOpen} />
+            <LandingPage onAuth={handleAuthOverlayOpen} />
             <AnimatePresence mode="wait">
               {showAuthOverlay && (
                 <motion.div 
@@ -165,55 +157,57 @@ export default function App() {
                         <X className="w-6 h-6" />
                       </button>
                     </div>
-                    <MemoizedAuthModal />
+                      <AuthModal />
                   </motion.div>
                 </motion.div>
               )}
             </AnimatePresence>
           </React.Suspense>
           <React.Suspense fallback={null}><LazyToaster /></React.Suspense>
-        </ReactLenis>
-      </div>
-    );
-  }
-
-  // Block unverified users
-  if (!isEmailVerified) {
-    return (
-      <div className="h-screen w-full flex items-center justify-center bg-white dark:bg-[#050505]">
-        <div className="space-y-4 text-center max-w-md p-4">
-          <div className="w-16 h-16 bg-blue-500 rounded-2xl mx-auto flex items-center justify-center">
-            <Loader2 className="w-8 h-8 text-white animate-spin" />
-          </div>
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-white">Verify Your Email</h2>
-          <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Check your email for a verification link. Once verified, you'll have full access.
-          </p>
-          <button
-            onClick={() => signOut()}
-            className="mt-6 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-colors"
-          >
-            Sign Out
-          </button>
         </div>
-      </div>
-    );
-  }
+      );
+    }
 
+    if (!isEmailVerified) {
+      return (
+        <div className="h-screen w-full flex items-center justify-center bg-white dark:bg-[#050505]">
+          <div className="space-y-4 text-center max-w-md p-4">
+            <div className="w-16 h-16 bg-blue-500 rounded-2xl mx-auto flex items-center justify-center">
+              <Loader2 className="w-8 h-8 text-white animate-spin" />
+            </div>
+            <h2 className="text-2xl font-bold text-zinc-900 dark:text-white">Verify Your Email</h2>
+            <p className="text-sm text-zinc-600 dark:text-zinc-400">
+              Check your email for a verification link. Once verified, you'll have full access.
+            </p>
+            <button
+              onClick={() => signOut()}
+              className="mt-6 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-colors"
+            >
+              Sign Out
+            </button>
+          </div>
+        </div>
+      );
+    }
 
-  return (
-    <ReactLenis root options={{ lerp: 0.075, wheelMultiplier: 1.2, touchMultiplier: 2 }}>
+    return (
       <TooltipProvider>
         <div className="flex h-screen w-full bg-brand-background overflow-hidden selection:bg-brand-primary/10 transition-colors">
           <React.Suspense fallback={null}><LazyToaster position="top-right" richColors /></React.Suspense>
           <React.Suspense fallback={<LoadingFallback />}>
-            <MemoizedWorkspace 
+            <Workspace 
               user={user} 
               onLogout={signOut} 
             />
           </React.Suspense>
         </div>
       </TooltipProvider>
-    </ReactLenis>
+    );
+  };
+
+  return (
+    <LazyMotion features={domAnimation} strict>
+      {renderContent()}
+    </LazyMotion>
   );
 }

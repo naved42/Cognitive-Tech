@@ -199,4 +199,8 @@
   .active\:scale-\[0\.98\] {
     transition: transform 0.1s ease-out;
   }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
+  }
 }

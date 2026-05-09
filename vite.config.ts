@@ -43,12 +43,16 @@ export default defineConfig(({mode}) => {
           drop_console: true,
           drop_debugger: true,
           pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
-          passes: 2, // Multiple passes for better compression
+          passes: 2,
           hoist_funs: true,
           reduce_vars: true,
+          // Disable some aggressive optimizations that can break certain libraries
+          inline: 2,
         },
         mangle: {
           properties: false,
+          // Ensure function names are preserved if needed for certain libraries
+          keep_fnames: false,
         },
         format: {
           comments: false,
@@ -58,62 +62,41 @@ export default defineConfig(({mode}) => {
 
       rollupOptions: {
         output: {
-          // ========================================================
-          // MANUAL CHUNKS: Split by feature & library size
-          // ========================================================
           manualChunks(id) {
             // ✅ Heavy charting library
             if (id.includes('plotly.js') || id.includes('react-plotly')) {
               return 'plotly-chart';
             }
 
-            // ✅ Data parsing libraries
-            if (id.includes('xlsx')) {
-              return 'file-parser-xlsx';
-            }
-            if (id.includes('papaparse')) {
-              return 'file-parser-csv';
-            }
-
-            // ✅ Firebase
-            if (id.includes('firebase')) {
-              return 'firebase-auth';
-            }
-
-            // ✅ Animation library
-            if (id.includes('motion/react') || id.includes('@motionone')) {
-              return 'motion-lib';
-            }
-
-            // ✅ Scroll library
-            if (id.includes('lenis')) {
-              return 'scroll-lib';
-            }
-
-            // ✅ Google Generative AI
-            if (id.includes('@google/genai')) {
-              return 'genai-lib';
-            }
-
-            // ✅ Base UI components
-            if (id.includes('@base-ui/react')) {
-              return 'base-ui';
-            }
-
-            // ✅ React core
-            if (id.includes('react') && !id.includes('react-')) {
-              return 'react-core';
-            }
-            if (id.includes('react-dom') || id.includes('react-markdown')) {
-              return 'react-ecosystem';
-            }
-
-            // ✅ UI icons
+            // ✅ Icons (Grouped together for consistency)
             if (id.includes('lucide-react')) {
               return 'lucide-icons';
             }
 
-            // ✅ Core vendor chunk for remaining dependencies
+            // ✅ Data parsing
+            if (id.includes('xlsx')) return 'file-parser-xlsx';
+            if (id.includes('papaparse')) return 'file-parser-csv';
+
+            // ✅ Firebase
+            if (id.includes('firebase')) return 'firebase-auth';
+
+            // ✅ React Core (Group React, React-DOM and critical related libs)
+            // Using a more specific check to avoid matching random packages with "react" in the name
+            if (
+              id.includes('node_modules/react/') || 
+              id.includes('node_modules/react-dom/') ||
+              id.includes('node_modules/scheduler/') ||
+              id.includes('node_modules/object-assign/')
+            ) {
+              return 'react-core';
+            }
+
+            // ✅ Framer Motion / Motion
+            if (id.includes('motion') || id.includes('framer-motion')) {
+              return 'animation-core';
+            }
+
+            // ✅ Remaining vendor dependencies
             if (id.includes('node_modules')) {
               return 'vendor-other';
             }

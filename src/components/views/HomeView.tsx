@@ -44,7 +44,7 @@ import {
 import { cn } from '@/lib/utils';
 import { RobotAvatar } from '../RobotAvatar';
 import { generateStreamResponse } from '@/src/services/geminiService';
-import ReactMarkdown from 'react-markdown';
+const ReactMarkdown = React.lazy(() => import('react-markdown'));
 import { useAuth } from '../../hooks/useAuth';
 import { toast } from 'sonner';
 import { ChatPlotly, ChatTable, ChatCode } from '../chat/ChatComponents';
@@ -71,18 +71,18 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
   const { getToken, user } = useAuth();
   const userId = user?.uid;
   const [input, setInput] = React.useState(initialPrompt || '');
-  // Restore messages from localStorage on mount (user-scoped)
-  const [messages, setMessages] = React.useState<ChatMessage[]>(() => {
+  // Load messages from localStorage after initial render to avoid blocking main thread (LCP optimization)
+  const [messages, setMessages] = React.useState<ChatMessage[]>([]);
+  React.useEffect(() => {
     try {
       const key = userId ? `ct_chat_messages_${userId}` : 'ct_chat_messages';
       const saved = localStorage.getItem(key);
       if (saved) {
         const parsed = JSON.parse(saved);
-        return parsed.map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) }));
+        setMessages(parsed.map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) })));
       }
     } catch {}
-    return [];
-  });
+  }, [userId]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [isAdvancedReasoning, setIsAdvancedReasoning] = React.useState(false);
   // Restore tokens from localStorage (default 20, user-scoped)
@@ -111,7 +111,7 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
   const [pendingFile, setPendingFile] = React.useState<{ name: string, summary: string } | null>(null);
   
   // Rate limiting logic: 5 messages per hour for free users
-  const [isPro, setIsPro] = React.useState(localStorage.getItem('ct_user_tier') === 'pro');
+  const [isPro, setIsPro] = React.useState(() => localStorage.getItem('ct_user_tier') === 'pro');
   const [recentMessagesCount, setRecentMessagesCount] = React.useState(0);
 
   React.useEffect(() => {
@@ -599,11 +599,11 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
         const jsonPart = parts[1].split("```")[0];
         const chartData = JSON.parse(jsonPart);
         return (
-          <>
+          <React.Suspense fallback={<div className="h-20 animate-pulse bg-slate-100 dark:bg-zinc-800 rounded-xl" />}>
             <ReactMarkdown>{parts[0]}</ReactMarkdown>
             <ChatPlotly {...chartData} />
             <ReactMarkdown>{parts[1].split("```")[1]}</ReactMarkdown>
-          </>
+          </React.Suspense>
         );
       } catch (e) { /* ignore */ }
     }
@@ -614,33 +614,35 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
         const jsonPart = parts[1].split("```")[0];
         const tableData = JSON.parse(jsonPart);
         return (
-          <>
+          <React.Suspense fallback={<div className="h-20 animate-pulse bg-slate-100 dark:bg-zinc-800 rounded-xl" />}>
             <ReactMarkdown>{parts[0]}</ReactMarkdown>
             <ChatTable data={tableData} />
             <ReactMarkdown>{parts[1].split("```")[1]}</ReactMarkdown>
-          </>
+          </React.Suspense>
         );
       } catch (e) { /* ignore */ }
     }
 
     return (
       <div className="markdown-body">
-        <ReactMarkdown
-          components={{
-            code({ node, inline, className, children, ...props }: any) {
-              const match = /language-(\w+)/.exec(className || '');
-              return !inline && match ? (
-                <ChatCode code={String(children).replace(/\n$/, '')} language={match[1]} />
-              ) : (
-                <code className={className} {...props}>
-                  {children}
-                </code>
-              );
-            }
-          }}
-        >
-          {content}
-        </ReactMarkdown>
+        <React.Suspense fallback={<div className="h-20 animate-pulse bg-slate-100 dark:bg-zinc-800 rounded-xl" />}>
+          <ReactMarkdown
+            components={{
+              code({ node, inline, className, children, ...props }: any) {
+                const match = /language-(\w+)/.exec(className || '');
+                return !inline && match ? (
+                  <ChatCode code={String(children).replace(/\n$/, '')} language={match[1]} />
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              }
+            }}
+          >
+            {content}
+          </ReactMarkdown>
+        </React.Suspense>
       </div>
     );
   };
@@ -751,11 +753,11 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
           )}
         </AnimatePresence>
 
-        <ReactLenis className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-8 scroll-smooth" ref={scrollRef as any}>
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-8 scroll-smooth custom-scrollbar" ref={scrollRef as any}>
           {messages.map((msg, i) => (
             <motion.div 
               key={msg.id}
-              initial={{ opacity: 0, y: 10 }}
+              initial={false}
               animate={{ opacity: 1, y: 0 }}
               className={cn(
                 "flex gap-4 sm:gap-6 group",
@@ -877,7 +879,7 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
               </div>
             </div>
           )}
-        </ReactLenis>
+        </div>
 
         <div className="p-4 border-t border-slate-100 dark:border-zinc-800 bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md">
            <div className="w-full px-4 sm:px-6 lg:px-10 space-y-3">

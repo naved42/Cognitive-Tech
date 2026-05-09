@@ -22,7 +22,8 @@ import {
   LineChart,
 } from 'lucide-react';
 import { Button } from './ui/button';
-import { InteractiveRobot } from './InteractiveRobot';
+
+
 
 interface LandingPageProps {
   onAuth: () => void;
@@ -31,11 +32,8 @@ interface LandingPageProps {
 export const LandingPage = ({ onAuth }: LandingPageProps) => {
   const [currentView, setCurrentView] = React.useState<'home' | 'pricing' | 'resources' | 'contact'>('home');
   const [isScrolled, setIsScrolled] = React.useState(false);
-  const [isWatchingLogin, setIsWatchingLogin] = React.useState(false);
-  const heroRoboConstraintsRef = React.useRef(null);
 
-  const startWatching = () => setIsWatchingLogin(true);
-  const stopWatching = () => setIsWatchingLogin(false);
+
 
   const switchView = (view: 'home' | 'pricing' | 'resources' | 'contact') => {
     setCurrentView(view);
@@ -50,16 +48,13 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+
+
   const renderHome = () => (
     <>
       {/* Hero Section - Desktop Optimized */}
       <section className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 xl:py-32 w-full flex flex-col lg:flex-row items-center gap-8 lg:gap-12 xl:gap-16 relative max-w-7xl mx-auto">
-        <motion.div 
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="lg:w-1/2 space-y-6 sm:space-y-8"
-        >
+        <div className="lg:w-1/2 space-y-6 sm:space-y-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
             <Sparkles className="w-3.5 h-3.5" />
             <span className="text-xs sm:text-xs font-bold uppercase tracking-wider">The Future of Data Science</span>
@@ -67,14 +62,12 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold leading-[1.05] tracking-tight text-brand-on-surface">
             <span className="text-gradient">AI Data Analysis Tool</span>
           </h1>
-          <p className="text-base sm:text-lg lg:text-xl text-brand-surface-variant max-w-lg leading-relaxed">
+          <p className="hero-text text-base sm:text-lg lg:text-xl text-brand-surface-variant max-w-lg leading-relaxed">
             Chat with CSV and Excel files using AI. Ask questions in plain English and get charts, insights, and reports in seconds.
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-4 pt-4">
             <button 
               onClick={onAuth} 
-              onMouseEnter={startWatching}
-              onMouseLeave={stopWatching}
               className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-xl shadow-blue-600/30 hover:-translate-y-1 active:scale-95 transition-all"
             >
               Start Analyzing Free
@@ -84,69 +77,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>
-        </motion.div>
-        <motion.div 
-          ref={heroRoboConstraintsRef}
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          className="lg:w-1/2 w-full relative h-[500px] sm:h-[600px] flex items-center justify-center overflow-hidden"
-        >
-          <div className="relative z-10">
-            <InteractiveRobot isWatchingLogin={isWatchingLogin} dragConstraints={heroRoboConstraintsRef} />
-          </div>
-
-          {/* Floating Data Elements */}
-          <div className="absolute inset-0 pointer-events-none">
-            {/* Element 1: Bar Chart */}
-            <motion.div 
-              animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-[20%] left-[10%] p-4 bg-white rounded-2xl shadow-xl border border-slate-100"
-            >
-              <div className="flex items-end gap-1 h-8 w-12">
-                <div className="w-2 h-[40%] bg-blue-500 rounded-full"></div>
-                <div className="w-2 h-[80%] bg-indigo-500 rounded-full"></div>
-                <div className="w-2 h-[60%] bg-blue-400 rounded-full"></div>
-              </div>
-            </motion.div>
-
-            {/* Element 2: Code Snippet */}
-            <motion.div 
-              animate={{ y: [0, 20, 0], x: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute bottom-[25%] left-[5%] p-3 bg-slate-900 rounded-xl shadow-2xl border border-white/10 scale-90"
-            >
-              <div className="space-y-1.5">
-                <div className="w-8 h-1 bg-blue-400 rounded-full"></div>
-                <div className="w-12 h-1 bg-slate-600 rounded-full"></div>
-                <div className="w-10 h-1 bg-indigo-400 rounded-full"></div>
-              </div>
-            </motion.div>
-
-            {/* Element 3: Pie Chart */}
-            <motion.div 
-              animate={{ scale: [1, 1.1, 1], y: [0, -15, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-              className="absolute top-[15%] right-[10%] p-4 bg-white rounded-full shadow-xl border border-slate-100"
-            >
-              <div className="w-10 h-10 rounded-full border-[6px] border-emerald-500 border-t-transparent -rotate-45"></div>
-            </motion.div>
-
-            {/* Element 4: Accuracy Badge */}
-            <motion.div 
-              animate={{ y: [0, 15, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-              className="absolute bottom-[20%] right-[5%] px-4 py-2 bg-indigo-600 rounded-full shadow-lg shadow-indigo-500/20 text-white text-[10px] font-black uppercase tracking-widest"
-            >
-              99.9% Accuracy
-            </motion.div>
-          </div>
-
-          {/* Decorative blurs */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-brand-primary/10 blur-[100px] -z-10 rounded-full animate-pulse"></div>
-          <div className="absolute top-[30%] right-[20%] w-40 h-40 bg-blue-400/5 blur-[80px] -z-10 rounded-full"></div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Social Proof - Desktop Optimized */}
@@ -269,7 +200,13 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                 className="space-y-4 pt-12"
               >
                 <div className="aspect-[4/5] bg-slate-800 rounded-3xl overflow-hidden relative group">
-                  <img alt="Data focus" className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALkg6WgzCY_BUTkivc1DWtFLV-i_gFwHJxv7GPcjS0vb3qim6GPVCxCbmkUnbQU2k1xh27q5s4-EgOL1Vu6cWD62FcwT2ztnhDXvCuOonYRyKJhUPddML4U0silZDZ1DSq4S0xzlJp4KJ4NJrrzBNfLStoYfvrBKN3dzVnNU6yZf3WOPaE0T2abgZtOVH_SMBJhOh85jMEeP5s2kd_bEwQPYAS2-Hn0WrsTV4uZuUejrc624JHR14fJjHow2cGsIeXU1KSptUUwHo" />
+                  <img 
+                    alt="Data focus" 
+                    className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-all duration-700" 
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuALkg6WgzCY_BUTkivc1DWtFLV-i_gFwHJxv7GPcjS0vb3qim6GPVCxCbmkUnbQU2k1xh27q5s4-EgOL1Vu6cWD62FcwT2ztnhDXvCuOonYRyKJhUPddML4U0silZDZ1DSq4S0xzlJp4KJ4NJrrzBNfLStoYfvrBKN3dzVnNU6yZf3WOPaE0T2abgZtOVH_SMBJhOh85jMEeP5s2kd_bEwQPYAS2-Hn0WrsTV4uZuUejrc624JHR14fJjHow2cGsIeXU1KSptUUwHo" 
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div className="absolute bottom-6 left-6 right-6">
                     <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
                       <p className="text-2xl font-bold">99.9%</p>
@@ -284,7 +221,13 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                   whileInView={{ opacity: 1, y: 0 }}
                   className="aspect-[4/5] bg-slate-800 rounded-3xl overflow-hidden relative group"
                 >
-                  <img alt="Lab research" className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbzKgUJ_6di5x4CWta1Kw-Na9UhM0-fYE5T5jOEoJshl8k34YjWIB3mPDkudu3Y0SM8Sx5OZP7EXcQBjvQKvh32hKLgg1JTtYrQfFyIGfGukOOYXenucs7Tx6B5ikSjgZ_lqnAOso4GlZaCjJker_LWqfVc8iwfDJY0kVE8M-VTa62i03jDn25f60eLSn2F7LsZWRaNOuzlNZ5-2KdLrv5UDUnQxAfdexzF7_GCquUMlMPWXEkn2TPaS9_qe7lCvOf_HUHl4Mhnsw" />
+                  <img 
+                    alt="Lab research" 
+                    className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-all duration-700" 
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbzKgUJ_6di5x4CWta1Kw-Na9UhM0-fYE5T5jOEoJshl8k34YjWIB3mPDkudu3Y0SM8Sx5OZP7EXcQBjvQKvh32hKLgg1JTtYrQfFyIGfGukOOYXenucs7Tx6B5ikSjgZ_lqnAOso4GlZaCjJker_LWqfVc8iwfDJY0kVE8M-VTa62i03jDn25f60eLSn2F7LsZWRaNOuzlNZ5-2KdLrv5UDUnQxAfdexzF7_GCquUMlMPWXEkn2TPaS9_qe7lCvOf_HUHl4Mhnsw" 
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div className="absolute bottom-6 left-6 right-6">
                     <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
                       <p className="text-2xl font-bold">&lt;2s</p>
@@ -575,16 +518,12 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           <div className="flex items-center gap-4">
             <button 
               onClick={onAuth} 
-              onMouseEnter={startWatching}
-              onMouseLeave={stopWatching}
               className="text-slate-600 font-medium hover:text-brand-primary px-4 py-2 transition-colors duration-200"
             >
               Sign In
             </button>
             <button 
               onClick={onAuth} 
-              onMouseEnter={startWatching}
-              onMouseLeave={stopWatching}
               className="bg-brand-primary text-white px-5 py-2.5 rounded-lg font-semibold hover:opacity-90 active:scale-95 transition-all shadow-lg shadow-brand-primary/20"
             >
               Get Started
@@ -620,8 +559,6 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               <div className="pt-8">
                 <button 
                   onClick={onAuth} 
-                  onMouseEnter={startWatching}
-                  onMouseLeave={stopWatching}
                   className="bg-white text-brand-primary px-10 py-5 rounded-2xl font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-blue-900/40"
                 >
                   Start Your Journey Free

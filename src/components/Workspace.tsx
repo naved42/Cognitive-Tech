@@ -49,7 +49,7 @@ const ConnectDataView = React.lazy(() => import('./views/ConnectDataView').then(
 const NotebooksView = React.lazy(() => import('./views/NotebooksView').then(m => ({ default: m.NotebooksView })));
 const NotebookTemplatesView = React.lazy(() => import('./views/NotebookTemplatesView').then(m => ({ default: m.NotebookTemplatesView })));
 const CommunityView = React.lazy(() => import('./views/CommunityView').then(m => ({ default: m.CommunityView })));
-const HomeView = React.lazy(() => import('./views/HomeView').then(m => ({ default: m.HomeView })));
+import { HomeView } from './views/HomeView';
 const ContactView = React.lazy(() => import('./views/ContactView').then(m => ({ default: m.ContactView })));
 const TodoView = React.lazy(() => import('./views/TodoView').then(m => ({ default: m.TodoView })));
 const SettingsView = React.lazy(() => import('./SettingsView').then(m => ({ default: m.SettingsView })));
@@ -667,11 +667,11 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
         </header>
 
         {/* Canvas Body - Desktop Responsive */}
-        <ReactLenis className="flex-1 overflow-y-auto overflow-x-hidden">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
            <AnimatePresence mode="wait">
              <motion.div
                key={activeView}
-               initial={{ opacity: 0 }}
+               initial={false}
                animate={{ opacity: 1 }}
                exit={{ opacity: 0 }}
                transition={{ duration: 0.2 }}
@@ -686,7 +686,7 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
                 </React.Suspense>
              </motion.div>
            </AnimatePresence>
-        </ReactLenis>
+        </div>
 
         {/* Mobile Sidebar Overlay */}
         <AnimatePresence>

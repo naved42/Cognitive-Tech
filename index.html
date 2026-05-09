@@ -21,7 +21,11 @@
   <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
   
   <!-- Load only essential Inter weights with font-display: swap to avoid FOIT/FOUT -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'" />
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  </noscript>
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
@@ -39,6 +43,56 @@
 
   <link rel="icon" type="image/png" href="/assets/favicon.png" />
   <link rel="apple-touch-icon" href="/assets/favicon.png" />
+  
+  <!-- Critical CSS to prevent white flash and provide immediate background render -->
+  <style>
+    :root {
+      --brand-primary: #0f172a;
+      --brand-background: #f9f9f9;
+      --brand-on-surface: #1a1c1c;
+    }
+    body, html, #root {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--brand-background);
+      color: var(--brand-on-surface);
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    p.hero-text {
+      font-size: 1.125rem;
+      line-height: 1.625;
+      color: #64748b;
+      max-width: 32rem;
+    }
+    @media (min-width: 640px) {
+      h1 { font-size: 4rem; }
+    }
+    @media (min-width: 1024px) {
+      h1 { font-size: 5rem; }
+    }
+    .text-gradient {
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --brand-background: #0f1117;
+        --brand-on-surface: #e6edf3;
+      }
+      p.hero-text { color: #94a3b8; }
+    }
+  </style>
 </head>
 
 <body>

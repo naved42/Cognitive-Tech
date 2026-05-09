@@ -12,6 +12,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { spawn } from "child_process";
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import rateLimit from 'express-rate-limit';
+import compression from 'compression';
 import { SEO_PAGES, renderSeoPage } from './src/seo/seo-pages.js';
 
 // Load environment variables
@@ -121,6 +122,7 @@ try {
   console.log("Firebase init skipped");
 }
 const app = express();
+app.use(compression());
 const PORT = parseInt(process.env.PORT || "3000");
 // ============================================================
 // AUTH MIDDLEWARE
@@ -585,6 +587,14 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
+    
+    // Cache static assets (JS/CSS/Fonts) for 1 year as they are hashed
+    app.use('/assets', express.static(path.join(distPath, 'assets'), {
+      maxAge: '1y',
+      immutable: true
+    }));
+    
+    // Serve other static files normally
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
