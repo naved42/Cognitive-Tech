@@ -152,7 +152,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
       {/* Social Proof - Desktop Optimized */}
       <section className="bg-brand-surface border-y border-slate-100 py-8 sm:py-12 lg:py-16">
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 flex flex-col items-center justify-center gap-8">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-surface-variant opacity-70">Trusted by teams at</span>
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600">Trusted by teams at</span>
           <div className="flex flex-wrap justify-center gap-8 sm:gap-12 lg:gap-16 xl:gap-24 items-center w-full max-w-5xl">
             <div className="text-xl sm:text-2xl lg:text-3xl font-black text-brand-on-surface tracking-tighter">TECHCORP</div>
             <div className="text-xl sm:text-2xl lg:text-3xl font-black text-brand-primary tracking-tighter">DATAFLOW</div>
@@ -640,13 +640,13 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-black text-[10px]">AI</div>
               AI Data Analysis Tool
             </div>
-            <p className="text-slate-500 max-w-xs leading-relaxed">
+            <p className="text-slate-600 max-w-xs leading-relaxed">
               Automating data analysis for enterprise teams. Unlock insights from millions of data points across any industry.
             </p>
             <div className="flex gap-4">
-              <Twitter className="w-5 h-5 text-slate-400 cursor-pointer hover:text-brand-primary transition-colors" />
-              <Linkedin className="w-5 h-5 text-slate-400 cursor-pointer hover:text-brand-primary transition-colors" />
-              <Mail className="w-5 h-5 text-slate-400 cursor-pointer hover:text-brand-primary transition-colors" />
+              <Twitter className="w-5 h-5 text-slate-500 cursor-pointer hover:text-brand-primary transition-colors" />
+              <Linkedin className="w-5 h-5 text-slate-500 cursor-pointer hover:text-brand-primary transition-colors" />
+              <Mail className="w-5 h-5 text-slate-500 cursor-pointer hover:text-brand-primary transition-colors" />
             </div>
           </div>
           <div className="flex flex-col gap-4">
@@ -665,16 +665,16 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           <div className="flex flex-col gap-4">
             <span className="font-bold text-slate-900 pb-2">Legal</span>
             {['Privacy Policy', 'Terms of Service', 'Cookie Policy', 'Security'].map((item) => (
-              <a key={item} className="text-slate-500 hover:text-brand-primary transition-colors" href="#">{item}</a>
+              <a key={item} className="text-slate-600 hover:text-brand-primary transition-colors" href="#">{item}</a>
             ))}
           </div>
         </div>
-        <div className="w-full pt-20 flex flex-col md:flex-row justify-between items-center gap-6 text-slate-400 text-xs font-medium border-t border-slate-100 mt-20">
+        <div className="w-full pt-20 flex flex-col md:flex-row justify-between items-center gap-6 text-slate-600 text-xs font-medium border-t border-slate-100 mt-20">
           <span>© 2024 AI Data Analysis Tool. All rights reserved.</span>
           <div className="flex gap-8">
-            <a href="#" className="hover:text-slate-600 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-slate-600 transition-colors">Terms</a>
-            <a href="#" className="hover:text-slate-600 transition-colors">Cookies</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Terms</a>
+            <a href="#" className="hover:text-slate-900 transition-colors">Cookies</a>
           </div>
         </div>
       </footer>

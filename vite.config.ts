@@ -23,15 +23,26 @@ export default defineConfig(({mode}) => {
     },
     build: {
       target: 'esnext',
-      minify: 'esbuild',
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
+        },
+        format: {
+          comments: false,
+        },
+      },
       rollupOptions: {
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              // Heavy standalone libs — safe to isolate
+              // Truly standalone heavy libs — safe to isolate
               if (id.includes('plotly.js')) return 'plotly';
               if (id.includes('xlsx')) return 'xlsx';
-              // Everything else in one vendor chunk to avoid init order issues
+              if (id.includes('firebase')) return 'firebase';
+              // Everything else in one vendor chunk
               return 'vendor';
             }
           }
