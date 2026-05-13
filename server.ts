@@ -312,6 +312,33 @@ async function startServer() {
   // ============================================================
   // API CHAT ENDPOINT
   // ============================================================
+
+  // Temporary debug endpoint — enable by setting ENABLE_DEBUG_CHAT=true in the service environment.
+  // This endpoint bypasses authentication and returns any provider error details to help debugging.
+  if (process.env.ENABLE_DEBUG_CHAT === 'true') {
+    app.post("/api/debug-chat", async (req, res) => {
+      try {
+        const { messages } = req.body;
+        if (!messages || !Array.isArray(messages)) {
+          return res.status(400).json({ error: "messages array required" });
+        }
+
+        try {
+          const text = await runAI(messages);
+          return res.json({ text });
+        } catch (err: any) {
+          console.error("Debug AI Error:", err);
+          // Surface error details for debugging only
+          return res.status(500).json({ error: "AI generation failed", details: err?.message || String(err) });
+        }
+
+      } catch (err) {
+        console.error("Debug endpoint error:", err);
+        res.status(500).json({ error: "Debug endpoint failed", details: String(err) });
+      }
+    });
+  }
+
   app.post("/api/chat", verifyAuth, async (req, res) => {
     try {
       const { messages } = req.body;
