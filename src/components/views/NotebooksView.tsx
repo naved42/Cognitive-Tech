@@ -149,7 +149,7 @@ export const NotebooksView = () => {
               placeholder="Enter title..."
               className="px-4 py-2 rounded-xl border border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-indigo-500 outline-none"
             />
-            <button onClick={createNotebook} className="p-2.5 bg-slate-900 dark:bg-indigo-600 text-white rounded-xl">
+            <button onClick={createNotebook} className="p-2.5 bg-brand-primary text-white rounded-xl">
               <Plus className="w-4 h-4" />
             </button>
             <button onClick={() => setIsCreating(false)} className="p-2.5 bg-slate-100 dark:bg-zinc-800 text-slate-500 rounded-xl">

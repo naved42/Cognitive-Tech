@@ -9,12 +9,8 @@ import {
   Mail,
   Linkedin,
   Instagram,
-  Twitter,
-  ChevronRight,
-  AtSign,
-  FileText
+  AtSign
 } from 'lucide-react';
-import { Button } from './ui/button';
 
 interface AboutPageProps {
   onAuth: () => void;
@@ -22,9 +18,9 @@ interface AboutPageProps {
 
 export const AboutPage = ({ onAuth }: AboutPageProps) => {
   return (
-    <div className="light min-h-screen bg-brand-background text-brand-on-surface">
+    <div className="light min-h-screen bg-brand-background text-brand-on-surface selection:bg-brand-primary/20 selection:text-brand-primary">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-brand-surface/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
+      <nav className="fixed top-0 w-full z-50 bg-brand-background/80 backdrop-blur-md border-b border-slate-100 shadow-sm">
         <div className="flex items-center justify-between px-6 py-4 w-full">
           <div 
             onClick={() => window.location.href = '/'}
@@ -82,7 +78,7 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
         </div>
       </nav>
 
-      <main className="pt-32 pb-20">
+      <main className="pt-24 pb-20">
         {/* About Header */}
         <section className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 max-w-6xl mx-auto">
           <div className="space-y-8">
@@ -95,10 +91,10 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
                 <Sparkles className="w-3.5 h-3.5" />
                 <span className="text-xs sm:text-xs font-bold uppercase tracking-wider">About Whyanalyst</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-brand-on-surface">
-                Whyanalyst: <span className="text-gradient">AI-Powered Analytics</span>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-brand-on-surface">
+                  Whyanalyst: <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-700">AI-Powered Analytics</span>
               </h1>
-              <p className="text-lg text-brand-surface-variant max-w-2xl leading-relaxed">
+                <p className="text-lg text-brand-surface-variant max-w-2xl leading-relaxed">
                 Whyanalyst is an AI‑powered analytics webapp developed by Muhammad Naveed to help users unlock insights from their data through natural language conversations.
               </p>
             </motion.div>
@@ -125,11 +121,11 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
                   <p className="text-brand-surface-variant">Transform raw data into actionable insights instantly</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <MessageSquare className="w-5 h-5 text-brand-primary mt-1 flex-shrink-0" />
+                  <MessageSquare className="w-5 h-5 text-emerald-600 mt-1 flex-shrink-0" />
                   <p className="text-brand-surface-variant">Ask questions in plain English, get intelligent answers</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Globe className="w-5 h-5 text-brand-primary mt-1 flex-shrink-0" />
+                  <Globe className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
                   <p className="text-brand-surface-variant">Accessible from anywhere, for teams of any size</p>
                 </div>
               </div>
@@ -152,11 +148,11 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
                   <p className="text-brand-surface-variant">Cutting-edge AI models for precise analysis</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <BarChart className="w-5 h-5 text-brand-primary mt-1 flex-shrink-0" />
+                  <BarChart className="w-5 h-5 text-emerald-600 mt-1 flex-shrink-0" />
                   <p className="text-brand-surface-variant">Beautiful, publication-ready visualizations</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Globe className="w-5 h-5 text-brand-primary mt-1 flex-shrink-0" />
+                  <Globe className="w-5 h-5 text-amber-600 mt-1 flex-shrink-0" />
                   <p className="text-brand-surface-variant">Enterprise-grade security and reliability</p>
                 </div>
               </div>
@@ -166,7 +162,7 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
 
         {/* Founder Section */}
         <section className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 max-w-6xl mx-auto">
-          <div className="bg-brand-surface border border-slate-100 rounded-3xl p-8 sm:p-12 lg:p-16 space-y-8">
+          <div className="bg-brand-background border border-slate-200 rounded-3xl p-8 sm:p-12 lg:p-16 space-y-8 shadow-sm">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -196,7 +192,7 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
                     rel="noopener noreferrer"
                     aria-label="Threads profile"
                     title="Threads"
-                    className="p-3 bg-brand-surface-container rounded-lg text-brand-primary hover:bg-slate-200 transition-colors"
+                    className="p-3 bg-brand-background border border-slate-200 rounded-lg text-brand-primary hover:bg-brand-primary/10 transition-colors"
                   >
                     <AtSign className="w-5 h-5" />
                   </a>
@@ -206,7 +202,7 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
                     rel="noopener noreferrer"
                     aria-label="LinkedIn profile"
                     title="LinkedIn"
-                    className="p-3 bg-brand-surface-container rounded-lg text-brand-primary hover:bg-slate-200 transition-colors"
+                    className="p-3 bg-brand-background border border-slate-200 rounded-lg text-brand-primary hover:bg-brand-primary/10 transition-colors"
                   >
                     <Linkedin className="w-5 h-5" />
                   </a>
@@ -216,14 +212,14 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
                     rel="noopener noreferrer"
                     aria-label="Instagram profile"
                     title="Instagram"
-                    className="p-3 bg-brand-surface-container rounded-lg text-brand-primary hover:bg-slate-200 transition-colors"
+                    className="p-3 bg-brand-background border border-slate-200 rounded-lg text-brand-primary hover:bg-brand-primary/10 transition-colors"
                   >
                     <Instagram className="w-5 h-5" />
                   </a>
                   <a
                     href="mailto:naved.jatt.42@gmail.com"
                     title="Email"
-                    className="p-3 bg-brand-surface-container rounded-lg text-brand-primary hover:bg-slate-200 transition-colors"
+                    className="p-3 bg-brand-background border border-slate-200 rounded-lg text-brand-primary hover:bg-brand-primary/10 transition-colors"
                   >
                     <Mail className="w-5 h-5" />
                   </a>
@@ -235,14 +231,14 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
 
         {/* CTA Section */}
         <section className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 max-w-6xl mx-auto">
-          <div className="bg-gradient-to-br from-brand-primary to-blue-600 p-12 lg:p-16 rounded-3xl text-center text-white space-y-6 shadow-xl">
+          <div className="bg-brand-background border border-slate-200 p-12 lg:p-16 rounded-3xl text-center text-brand-on-surface space-y-6 shadow-xl">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">Ready to Try Whyanalyst?</h2>
-            <p className="text-base sm:text-lg opacity-90 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-brand-surface-variant max-w-2xl mx-auto">
               Start analyzing your data with AI today. No credit card required.
             </p>
             <button 
               onClick={onAuth}
-              className="bg-white text-brand-primary px-8 py-4 rounded-xl font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-lg inline-flex items-center gap-2"
+              className="bg-brand-primary text-white px-8 py-4 rounded-xl font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-lg shadow-brand-primary/20 inline-flex items-center gap-2"
             >
               Get Started Free
               <ArrowRight className="w-5 h-5" />
@@ -252,7 +248,7 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-16 px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 bg-slate-50 border-t border-slate-200">
+      <footer className="w-full py-16 px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 bg-brand-background border-t border-slate-200">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-slate-600 text-xs font-medium">
             <span>© 2026 Whyanalyst – Developed by Muhammad Naveed</span>
@@ -279,6 +275,44 @@ export const AboutPage = ({ onAuth }: AboutPageProps) => {
                 document.head.appendChild(metaDescription);
               }
               metaDescription.content = 'Whyanalyst is an AI‑powered analytics tool developed by Muhammad Naveed to help users extract insights from their data through natural language conversations.';
+
+              const schemaId = 'about-founder-jsonld';
+              let schemaScript = document.getElementById(schemaId) as HTMLScriptElement | null;
+              if (!schemaScript) {
+                schemaScript = document.createElement('script');
+                schemaScript.id = schemaId;
+                schemaScript.type = 'application/ld+json';
+                document.head.appendChild(schemaScript);
+              }
+              schemaScript.textContent = JSON.stringify({
+                '@context': 'https://schema.org',
+                '@graph': [
+                  {
+                    '@type': 'Organization',
+                    '@id': 'https://whyanalyst.ai/#organization',
+                    name: 'WhyAnalyst',
+                    url: 'https://whyanalyst.ai',
+                    founder: {
+                      '@id': 'https://whyanalyst.ai/#founder',
+                    },
+                  },
+                  {
+                    '@type': 'Person',
+                    '@id': 'https://whyanalyst.ai/#founder',
+                    name: 'Muhammad Naveed',
+                    jobTitle: 'Founder',
+                    url: 'https://whyanalyst.ai/about',
+                    worksFor: {
+                      '@id': 'https://whyanalyst.ai/#organization',
+                    },
+                    sameAs: [
+                      'https://www.linkedin.com/in/naveedjat/',
+                      'https://www.instagram.com/muhammadnaveedjat/',
+                      'https://www.threads.com/@muhammadnaveedjat/media',
+                    ],
+                  },
+                ],
+              }, null, 2);
             })()
           )}
         </>

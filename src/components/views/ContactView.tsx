@@ -103,7 +103,7 @@ export const ContactView = () => {
                 ></textarea>
               </div>
 
-              <button className="w-full bg-slate-900 dark:bg-indigo-600 text-white font-black py-5 rounded-2xl hover:bg-black dark:hover:bg-indigo-700 transition-all shadow-2xl shadow-black/20 active:scale-[0.98] flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-xs">
+              <button className="w-full bg-brand-primary text-white font-black py-5 rounded-2xl hover:bg-brand-primary/90 transition-all shadow-2xl shadow-brand-primary/20 active:scale-[0.98] flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-xs">
                 <Send className="w-4 h-4" />
                 Initialize Secure Dispatch
               </button>

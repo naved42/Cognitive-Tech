@@ -94,7 +94,7 @@ export const NotebookTemplatesView = ({ onLaunch }: NotebookTemplatesViewProps) 
                 >
                   Use Template
                 </button>
-                <button className="flex-1 px-8 py-4 border border-slate-200 dark:border-zinc-800 text-slate-600 dark:text-zinc-400 rounded-xl text-sm font-bold hover:bg-slate-50 dark:hover:bg-zinc-800 transition-all uppercase tracking-widest">Live Demo</button>
+                <button className="flex-1 px-8 py-4 border border-brand-primary/20 text-brand-primary bg-brand-background rounded-xl text-sm font-bold hover:bg-brand-primary/10 transition-all uppercase tracking-widest">Live Demo</button>
               </div>
             </div>
             <div className="flex-1 relative h-64 sm:h-80 lg:h-auto order-1 lg:order-2 overflow-hidden">
@@ -159,7 +159,7 @@ export const NotebookTemplatesView = ({ onLaunch }: NotebookTemplatesViewProps) 
           <h3 className="text-3xl sm:text-4xl font-black mb-4 tracking-tighter">Need something custom?</h3>
           <p className="text-slate-400 dark:text-indigo-200/60 text-lg sm:text-xl font-medium max-w-xl leading-relaxed">Describe your workflow and our AI will generate a bespoke technical playbook for your team in seconds.</p>
         </div>
-        <button className="relative z-10 w-full lg:w-auto whitespace-nowrap px-12 py-5 bg-white text-slate-900 dark:bg-indigo-600 dark:text-white rounded-2xl text-lg font-black hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] dark:hover:shadow-indigo-500/40 hover:-translate-y-1 transition-all active:scale-95 shadow-xl uppercase tracking-widest">
+        <button className="relative z-10 w-full lg:w-auto whitespace-nowrap px-12 py-5 bg-brand-primary text-white rounded-2xl text-lg font-black hover:opacity-90 hover:-translate-y-1 transition-all active:scale-95 shadow-xl shadow-brand-primary/20 uppercase tracking-widest">
             AI Blueprint
         </button>
       </div>

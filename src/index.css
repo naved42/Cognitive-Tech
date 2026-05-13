@@ -37,6 +37,8 @@
     width: 100%;
     margin: 0;
     padding: 0;
+    min-height: 100%;
+    background-color: var(--brand-background);
     overflow-x: hidden;
   }
 
@@ -58,52 +60,115 @@
   }
 
   :root {
-    --brand-primary: #0f172a;
+    --brand-primary: #6366f1;
     --brand-on-primary: #ffffff;
-    --brand-background: #f9f9f9;
-    --brand-surface: #f9f9f9;
-    --brand-on-surface: #1a1c1c;
-    --brand-surface-variant: #444655;
-    --brand-outline: #757687;
-    --brand-primary-container: #1032cf;
-    --brand-surface-container: #eeeeee;
-    --brand-surface-container-low: #f3f3f4;
-    --brand-surface-container-high: #e8e8e8;
-    --brand-surface-container-highest: #e2e2e2;
+    --brand-background: #fff5b8;
+    --brand-surface: #fff5b8;
+    --brand-on-surface: #221428;
+    --brand-surface-variant: #6d5b75;
+    --brand-outline: #cdb9d8;
+    --brand-primary-container: #818cf8;
+    --brand-surface-container: #fff5b8;
+    --brand-surface-container-low: #fff5b8;
+    --brand-surface-container-high: #fff5b8;
+    --brand-surface-container-highest: #fff5b8;
   }
 
   .light {
-    --brand-primary: #0f172a;
+    --brand-primary: #6366f1;
     --brand-on-primary: #ffffff;
-    --brand-background: #f9f9f9;
-    --brand-surface: #f9f9f9;
-    --brand-on-surface: #1a1c1c;
-    --brand-surface-variant: #444655;
-    --brand-outline: #757687;
-    --brand-primary-container: #1032cf;
-    --brand-surface-container: #eeeeee;
-    --brand-surface-container-low: #f3f3f4;
-    --brand-surface-container-high: #e8e8e8;
-    --brand-surface-container-highest: #e2e2e2;
+    --brand-background: #fff5b8;
+    --brand-surface: #fff5b8;
+    --brand-on-surface: #221428;
+    --brand-surface-variant: #6d5b75;
+    --brand-outline: #cdb9d8;
+    --brand-primary-container: #818cf8;
+    --brand-surface-container: #fff5b8;
+    --brand-surface-container-low: #fff5b8;
+    --brand-surface-container-high: #fff5b8;
+    --brand-surface-container-highest: #fff5b8;
   }
 
   .dark {
-    --brand-primary: #f0f4f8;
-    --brand-on-primary: #0f172a;
-    --brand-background: #0f1117;
-    --brand-surface: #161b22;
-    --brand-on-surface: #e6edf3;
-    --brand-surface-variant: #c9d1d9;
-    --brand-outline: #30363d;
-    --brand-primary-container: #58a6ff;
-    --brand-surface-container: #21262d;
-    --brand-surface-container-low: #0d1117;
-    --brand-surface-container-high: #30363d;
-    --brand-surface-container-highest: #484f58;
+    --brand-primary: #a5b4fc;
+    --brand-on-primary: #1e1b4b;
+    --brand-background: #1a1024;
+    --brand-surface: #231432;
+    --brand-on-surface: #fbf2ff;
+    --brand-surface-variant: #c7d2fe;
+    --brand-outline: #5b5fc7;
+    --brand-primary-container: #6366f1;
+    --brand-surface-container: #1f2340;
+    --brand-surface-container-low: #171b31;
+    --brand-surface-container-high: #2a3054;
+    --brand-surface-container-highest: #343b66;
   }
 
   body {
     @apply bg-brand-background text-brand-on-surface antialiased font-sans transition-colors duration-300;
+  }
+
+  button,
+  input,
+  select,
+  textarea,
+  [role='button'],
+  [data-slot='button'],
+  [data-slot='input'],
+  [data-slot='select-trigger'] {
+    border: 0 !important;
+  }
+
+  .light .bg-white,
+  .light .bg-white\/5,
+  .light .bg-white\/10,
+  .light .bg-white\/20,
+  .light .bg-white\/30,
+  .light .bg-white\/50,
+  .light .bg-white\/70,
+  .light .bg-white\/80,
+  .light .bg-gray-50,
+  .light .bg-slate-50,
+  .light .bg-slate-100,
+  .light .bg-slate-200,
+  .light .bg-zinc-50,
+  .light .bg-zinc-100,
+  .light .bg-zinc-900,
+  .light .bg-zinc-950 {
+    background-color: var(--brand-background) !important;
+  }
+
+  .light .text-slate-900,
+  .light .text-slate-800,
+  .light .text-zinc-900,
+  .light .text-zinc-800 {
+    color: var(--brand-on-surface) !important;
+  }
+
+  .light .text-slate-700,
+  .light .text-slate-600,
+  .light .text-slate-500,
+  .light .text-zinc-700,
+  .light .text-zinc-600,
+  .light .text-zinc-500,
+  .light .text-zinc-400 {
+    color: var(--brand-surface-variant) !important;
+  }
+
+  .light .bg-indigo-600,
+  .light .bg-indigo-700,
+  .light .bg-blue-500,
+  .light .bg-blue-600,
+  .light .bg-blue-700 {
+    background-color: var(--brand-primary) !important;
+  }
+
+  .light .hover\:bg-indigo-700:hover,
+  .light .hover\:bg-blue-700:hover,
+  .light .hover\:bg-zinc-800:hover,
+  .light .hover\:bg-zinc-200:hover {
+    background-color: color-mix(in srgb, var(--brand-primary) 88%, black 12%) !important;
+    color: var(--brand-on-primary) !important;
   }
 }
 
@@ -201,6 +266,63 @@
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-indigo-600 to-emerald-500 bg-clip-text text-transparent;
+  }
+
+  .text-blue-600 {
+    color: #6366f1 !important;
+  }
+
+  .border-brand-primary {
+    border-color: var(--brand-primary) !important;
+  }
+
+  .bg-blue-50 {
+    background-color: #f7efdf !important;
+  }
+
+  .from-blue-600 {
+    --tw-gradient-from: #6366f1 var(--tw-gradient-from-position) !important;
+    --tw-gradient-to: rgb(99 102 241 / 0) var(--tw-gradient-to-position) !important;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  }
+
+  .to-blue-700 {
+    --tw-gradient-to: #818cf8 var(--tw-gradient-to-position) !important;
+  }
+
+  .ai-marquee-track {
+    animation: ai-marquee-scroll 34s linear infinite;
+    will-change: transform;
+  }
+
+  .ai-marquee:hover .ai-marquee-track,
+  .ai-marquee:focus-within .ai-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .ai-marquee-card {
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08), 0 2px 10px rgba(59, 130, 246, 0.08);
+  }
+
+  .ai-marquee-card:hover {
+    transform: scale(1.04);
+    border-color: rgba(96, 165, 250, 0.45);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.16), 0 10px 28px rgba(99, 102, 241, 0.12);
+  }
+
+  @keyframes ai-marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-marquee-track {
+      animation: none;
+    }
   }
 }

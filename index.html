@@ -17,6 +17,38 @@
   <meta name="robots" content="index, follow" />
   <meta name="theme-color" content="#4f46e5" />
   <link rel="canonical" href="https://whyanalyst.ai/" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://whyanalyst.ai/#organization",
+        "name": "WhyAnalyst",
+        "url": "https://whyanalyst.ai",
+        "logo": "https://whyanalyst.ai/assets/favicon.png",
+        "founder": {
+          "@id": "https://whyanalyst.ai/#founder"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://whyanalyst.ai/#founder",
+        "name": "Muhammad Naveed",
+        "jobTitle": "Founder",
+        "url": "https://whyanalyst.ai/about",
+        "sameAs": [
+          "https://www.linkedin.com/in/naveedjat/",
+          "https://www.instagram.com/muhammadnaveedjat/",
+          "https://www.threads.com/@muhammadnaveedjat/media"
+        ],
+        "worksFor": {
+          "@id": "https://whyanalyst.ai/#organization"
+        }
+      }
+    ]
+  }
+  </script>
   
   <!-- Font Loading Optimization: Preconnect + DNS prefetch -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -51,9 +83,9 @@
   <!-- Critical CSS to prevent white flash and provide immediate background render -->
   <style>
     :root {
-      --brand-primary: #0f172a;
-      --brand-background: #f9f9f9;
-      --brand-on-surface: #1a1c1c;
+      --brand-primary: #6f2da8;
+      --brand-background: #fffdf6;
+      --brand-on-surface: #221428;
     }
     body, html, #root {
       margin: 0;

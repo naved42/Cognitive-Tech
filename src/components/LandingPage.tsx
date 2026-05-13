@@ -84,12 +84,17 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 pt-4">
             <button 
+              type="button"
               onClick={onAuth} 
-              className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-xl shadow-blue-600/30 hover:-translate-y-1 active:scale-95 transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-brand-primary px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-white shadow-xl shadow-brand-primary/30 transition-all hover:-translate-y-1 active:scale-95"
             >
               Start Analyzing Free
             </button>
-            <button onClick={onAuth} className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg border-2 border-blue-600 bg-blue-50 text-blue-600 hover:bg-blue-50 transition-all flex items-center justify-center gap-2 group">
+            <button
+              type="button"
+              onClick={onAuth}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-brand-primary/20 bg-brand-background px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-brand-primary shadow-sm transition-all hover:border-brand-primary/30 hover:bg-brand-primary/10 active:scale-95 group"
+            >
               View Live Demo
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
@@ -99,7 +104,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
 
       {/* AI Workforce Marquee */}
       <section className="px-0 sm:px-2 lg:px-4 -mt-3 sm:-mt-5">
-        <div className="relative overflow-hidden border-y border-slate-200/80 bg-gradient-to-r from-brand-background via-brand-surface to-brand-background py-10 sm:py-12">
+        <div className="relative overflow-hidden border-y border-slate-200/80 bg-brand-background py-10 sm:py-12">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 sm:w-32 bg-gradient-to-r from-brand-background to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 sm:w-32 bg-gradient-to-l from-brand-background to-transparent" />
 
@@ -110,9 +115,9 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                 return (
                   <article
                     key={`${card.name}-${index}`}
-                    className="ai-marquee-card w-[180px] sm:w-[200px] rounded-2xl border border-slate-200/90 bg-white/70 p-4 sm:p-5 text-center backdrop-blur-xl transition-all duration-300"
+                    className="ai-marquee-card w-[180px] sm:w-[200px] rounded-2xl border border-slate-200/90 bg-brand-background p-4 sm:p-5 text-center backdrop-blur-xl transition-all duration-300"
                   >
-                    <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full border border-blue-300/30 bg-gradient-to-br from-blue-500/25 to-purple-500/25 shadow-[0_0_22px_rgba(59,130,246,0.30)]">
+                    <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full border border-indigo-300/30 bg-gradient-to-br from-indigo-500/25 to-emerald-500/25 shadow-[0_0_22px_rgba(99,102,241,0.30)]">
                       <Icon className="h-6 w-6 text-brand-on-surface" />
                     </div>
 
@@ -137,7 +142,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
       </section>
 
       {/* Social Proof - Desktop Optimized */}
-      <section className="bg-brand-surface border-y border-slate-100 py-8 sm:py-12 lg:py-16">
+      <section className="bg-brand-background border-y border-slate-100 py-8 sm:py-12 lg:py-16">
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 flex flex-col items-center justify-center gap-8">
           <span className="text-xs font-bold uppercase tracking-[0.2em] text-slate-600">Trusted by teams at</span>
           <div className="flex flex-wrap justify-center gap-8 sm:gap-12 lg:gap-16 xl:gap-24 items-center w-full max-w-5xl">
@@ -168,7 +173,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 xl:gap-10">
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-brand-surface border border-slate-100 p-8 sm:p-10 lg:p-12 rounded-2xl hover:shadow-xl hover:border-brand-primary/20 transition-all h-full"
+            className="bg-brand-background border border-slate-100 p-8 sm:p-10 lg:p-12 rounded-2xl hover:shadow-xl hover:border-brand-primary/20 transition-all h-full"
           >
             <div className="bg-brand-primary/10 text-brand-primary w-14 h-14 flex items-center justify-center rounded-xl mb-6">
               <Cloud className="w-7 h-7" />
@@ -180,7 +185,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           </motion.div>
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-brand-surface border border-slate-100 p-8 sm:p-10 lg:p-12 rounded-2xl hover:shadow-xl hover:border-brand-primary/20 transition-all h-full"
+            className="bg-brand-background border border-slate-100 p-8 sm:p-10 lg:p-12 rounded-2xl hover:shadow-xl hover:border-brand-primary/20 transition-all h-full"
           >
             <div className="bg-blue-50 text-blue-600 w-14 h-14 flex items-center justify-center rounded-xl mb-6">
               <MessageSquare className="w-7 h-7" />
@@ -192,7 +197,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           </motion.div>
           <motion.div 
             whileHover={{ y: -5 }}
-            className="bg-brand-surface border border-slate-100 p-8 sm:p-10 lg:p-12 rounded-2xl hover:shadow-xl hover:border-brand-primary/20 transition-all h-full"
+            className="bg-brand-background border border-slate-100 p-8 sm:p-10 lg:p-12 rounded-2xl hover:shadow-xl hover:border-brand-primary/20 transition-all h-full"
           >
             <div className="bg-emerald-50 text-emerald-600 w-14 h-14 flex items-center justify-center rounded-xl mb-6">
               <BarChart className="w-7 h-7" />
@@ -207,7 +212,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
     </section>
 
     {/* Use Cases / Industries - Desktop Optimized */}
-      <section id="use-cases" className="bg-brand-surface border-y border-slate-100 py-12 sm:py-16 lg:py-24 xl:py-32 overflow-hidden">
+      <section id="use-cases" className="bg-brand-background border-y border-slate-100 py-12 sm:py-16 lg:py-24 xl:py-32 overflow-hidden">
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 xl:gap-20 items-center max-w-7xl mx-auto">
             <div className="lg:w-2/5 space-y-6 sm:space-y-8">
@@ -255,7 +260,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 className="space-y-4 pt-12"
               >
-                <div className="aspect-[4/5] bg-slate-800 rounded-3xl overflow-hidden relative group">
+                <div className="aspect-[4/5] bg-brand-background rounded-3xl overflow-hidden relative group">
                   <img 
                     alt="Data focus" 
                     className="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-all duration-700" 
@@ -264,9 +269,9 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                     decoding="async"
                   />
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
+                    <div className="p-4 bg-brand-background/80 backdrop-blur-md rounded-2xl border border-slate-200/60">
                       <p className="text-2xl font-bold">99.9%</p>
-                      <p className="text-[10px] uppercase font-bold text-white/50 tracking-widest">Statistical Accuracy</p>
+                      <p className="text-[10px] uppercase font-bold text-black/50 tracking-widest">Statistical Accuracy</p>
                     </div>
                   </div>
                 </div>
@@ -275,7 +280,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                 <motion.div 
                   initial={{ opacity: 0, y: -50 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  className="aspect-[4/5] bg-slate-800 rounded-3xl overflow-hidden relative group"
+                  className="aspect-[4/5] bg-brand-background rounded-3xl overflow-hidden relative group"
                 >
                   <img 
                     alt="Lab research" 
@@ -285,9 +290,9 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                     decoding="async"
                   />
                   <div className="absolute bottom-6 left-6 right-6">
-                    <div className="p-4 bg-white/10 backdrop-blur-md rounded-2xl border border-white/10">
+                    <div className="p-4 bg-brand-background/80 backdrop-blur-md rounded-2xl border border-slate-200/60">
                       <p className="text-2xl font-bold">&lt;2s</p>
-                      <p className="text-[10px] uppercase font-bold text-white/50 tracking-widest">Query Latency</p>
+                      <p className="text-[10px] uppercase font-bold text-black/50 tracking-widest">Query Latency</p>
                     </div>
                   </div>
                 </motion.div>
@@ -311,7 +316,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
         {/* Free */}
-        <div className="bg-brand-surface border border-slate-100 p-10 rounded-3xl flex flex-col shadow-sm transition-all hover:shadow-md">
+        <div className="bg-brand-background border border-slate-100 p-10 rounded-3xl flex flex-col shadow-sm transition-all hover:shadow-md">
           <div className="mb-8">
             <h3 className="text-xl font-bold text-brand-on-surface mb-2">Free</h3>
             <p className="text-brand-surface-variant text-sm">For curious individuals and enthusiasts.</p>
@@ -328,13 +333,13 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               </li>
             ))}
           </ul>
-          <button onClick={onAuth} className="w-full py-4 border-2 border-blue-600 bg-brand-surface text-blue-600 hover:bg-blue-50 rounded-xl font-bold transition-all active:scale-95">
+          <button onClick={onAuth}           className="w-full py-4 border-2 border-brand-primary bg-brand-background text-brand-primary hover:bg-brand-primary/10 rounded-xl font-bold transition-all active:scale-95">
             Join Community
           </button>
         </div>
         {/* Pro */}
-        <div className="bg-brand-surface border-2 border-blue-600 p-10 rounded-3xl flex flex-col shadow-2xl relative transform lg:-translate-y-6">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
+        <div className="bg-brand-background border-2 border-brand-primary p-10 rounded-3xl flex flex-col shadow-2xl relative transform lg:-translate-y-6">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-blue-600 to-blue-700 text-black px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-lg">
             Most Popular
           </div>
           <div className="mb-8">
@@ -359,12 +364,12 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               </li>
             ))}
           </ul>
-          <button onClick={onAuth} className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-bold text-lg shadow-xl shadow-blue-600/30 hover:opacity-90 transition-all active:scale-95">
+          <button onClick={onAuth} className="w-full py-4 bg-brand-primary text-white rounded-xl font-bold text-lg shadow-xl shadow-brand-primary/30 hover:opacity-90 transition-all active:scale-95">
             Go Premium
           </button>
         </div>
         {/* Enterprise */}
-        <div className="bg-brand-surface border border-slate-100 p-10 rounded-3xl flex flex-col shadow-sm transition-all hover:shadow-md">
+        <div className="bg-brand-background border border-slate-100 p-10 rounded-3xl flex flex-col shadow-sm transition-all hover:shadow-md">
           <div className="mb-8">
             <h3 className="text-xl font-bold text-brand-on-surface mb-2">Enterprise</h3>
             <p className="text-brand-surface-variant text-sm">For large teams and high-compliance labs.</p>
@@ -381,7 +386,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               </li>
             ))}
           </ul>
-          <button onClick={onAuth} className="w-full py-4 border-2 border-blue-600 bg-brand-surface text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-all active:scale-95">
+          <button onClick={onAuth} className="w-full py-4 border-2 border-brand-primary bg-brand-background text-brand-primary rounded-xl font-bold hover:bg-brand-primary/10 transition-all active:scale-95">
             Contact Sales
           </button>
         </div>
@@ -405,7 +410,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           { title: 'Case Studies', desc: 'Real-world success stories from partners.', icon: LineChart },
           { title: 'Community', desc: 'Join the discussion with other experts.', icon: MessageSquare }
         ].map((item, i) => (
-          <div key={i} className="group p-8 bg-brand-surface border border-slate-100 rounded-3xl shadow-sm hover:border-brand-primary/20 hover:shadow-md transition-all cursor-pointer">
+          <div key={i} className="group p-8 bg-brand-background border border-slate-100 rounded-3xl shadow-sm hover:border-brand-primary/20 hover:shadow-md transition-all cursor-pointer">
             <div className="w-12 h-12 bg-brand-primary/10 text-brand-primary rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <item.icon className="w-6 h-6" />
             </div>
@@ -428,21 +433,21 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
             <p className="text-lg text-brand-surface-variant max-w-xl">Our team of experts is ready to help you integrate enterprise-grade AI into your existing data workflows.</p>
           </header>
 
-          <div className="bg-brand-surface border border-slate-100 rounded-3xl p-8 shadow-sm">
+          <div className="bg-brand-background border border-slate-100 rounded-3xl p-8 shadow-sm">
             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-brand-surface-variant/70 uppercase tracking-wider ml-1">Full Name</label>
-                  <input className="w-full bg-brand-surface-container border border-slate-100 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all placeholder:text-brand-surface-variant/50" placeholder="John Doe" type="text"/>
+                  <input className="w-full bg-brand-background border border-slate-100 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all placeholder:text-brand-surface-variant/50" placeholder="John Doe" type="text"/>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-bold text-brand-surface-variant/70 uppercase tracking-wider ml-1">Email Address</label>
-                  <input className="w-full bg-brand-surface-container border border-slate-100 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all placeholder:text-brand-surface-variant/50" placeholder="john@company.ai" type="email"/>
+                  <input className="w-full bg-brand-background border border-slate-100 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all placeholder:text-brand-surface-variant/50" placeholder="john@company.ai" type="email"/>
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-brand-surface-variant/70 uppercase tracking-wider ml-1">Inquiry Type</label>
-                <select className="w-full bg-brand-surface-container border border-slate-100 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all text-brand-on-surface">
+                <select className="w-full bg-brand-background border border-slate-100 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all text-brand-on-surface">
                   <option>Sales Inquiry</option>
                   <option>Technical Support</option>
                   <option>Partnership Proposal</option>
@@ -451,7 +456,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold text-brand-surface-variant/70 uppercase tracking-wider ml-1">Message</label>
-                <textarea className="w-full bg-brand-surface-container border border-slate-100 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all placeholder:text-brand-surface-variant/50 resize-none h-40" placeholder="How can our technical team assist your workspace today?"></textarea>
+                <textarea className="w-full bg-brand-background border border-slate-100 rounded-xl px-4 py-3 focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all placeholder:text-brand-surface-variant/50 resize-none h-40" placeholder="How can our technical team assist your workspace today?"></textarea>
               </div>
               <button 
                 type="button"
@@ -469,7 +474,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           <div className="space-y-8">
             <div className="grid grid-cols-1 gap-4">
               {/* Email Card */}
-              <div className="bg-brand-surface border border-slate-100 p-6 rounded-3xl flex items-start gap-5 group hover:border-brand-primary/20 transition-all">
+              <div className="bg-brand-background border border-slate-100 p-6 rounded-3xl flex items-start gap-5 group hover:border-brand-primary/20 transition-all">
                 <div className="w-12 h-12 bg-brand-primary/10 rounded-xl flex items-center justify-center shrink-0 text-brand-primary">
                   <Mail className="w-6 h-6" />
                 </div>
@@ -481,7 +486,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               </div>
 
               {/* Social Card */}
-              <div className="bg-brand-surface border border-slate-100 p-6 rounded-3xl flex items-start gap-5 group hover:border-brand-primary/20 transition-all">
+              <div className="bg-brand-background border border-slate-100 p-6 rounded-3xl flex items-start gap-5 group hover:border-brand-primary/20 transition-all">
                 <div className="w-12 h-12 bg-blue-50/50 rounded-xl flex items-center justify-center shrink-0 text-blue-600">
                   <Globe className="w-6 h-6" />
                 </div>
@@ -495,7 +500,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               </div>
 
               {/* Office Card */}
-              <div className="bg-brand-surface border border-slate-100 p-6 rounded-3xl flex items-start gap-5 group hover:border-brand-primary/20 transition-all">
+              <div className="bg-brand-background border border-slate-100 p-6 rounded-3xl flex items-start gap-5 group hover:border-brand-primary/20 transition-all">
                 <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center shrink-0 text-emerald-600">
                   <Globe className="w-6 h-6" />
                 </div>
@@ -515,13 +520,13 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuk3XfP3LSXSfJM1ACPoMd8m0gd9af9yyN77_m5-SkvOWGwtn6AOkoOHPHBZpHuPS6lp1Ed9S06SBIOYF8c6vli-kRThT_aA48xxzRrRiVJ8CIXWDYvcnO0lmFEdYnlqraix4QVohh9BdmZOF591o6xqJ2--IM_t4oOvkObkU9Zwl71HDv1yKqH3wJZm95DU_02PIp6EjzhJjqWs6ARYU8rtQ7BuQadtPxWly2-ONgdkGmXjVNTPDplsZNhTRMAb0i31AebkfAaXs"
               />
               <div className="absolute inset-0 bg-brand-primary/5 mix-blend-multiply"></div>
-              <div className="absolute bottom-6 right-6 bg-brand-surface/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-brand-surface-variant/40 shadow-sm">
+              <div className="absolute bottom-6 right-6 bg-brand-background/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-slate-200/60 shadow-sm">
                 <p className="text-[10px] text-brand-primary font-black uppercase tracking-widest">Innovation Hub</p>
               </div>
             </div>
           </div>
 
-            <div className="bg-brand-primary/10 border border-brand-primary/20 p-8 rounded-3xl space-y-2">
+            <div className="bg-brand-background border border-brand-primary/20 p-8 rounded-3xl space-y-2">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
               <span className="text-xs font-bold text-brand-primary uppercase tracking-wider">Operational Status</span>
@@ -536,13 +541,13 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
   return (
     <div className="light min-h-screen bg-brand-background text-brand-on-surface selection:bg-brand-primary/20 selection:text-brand-primary">
       {/* Navigation */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-brand-surface/80 backdrop-blur-md border-b border-slate-100 shadow-sm' : 'bg-transparent'}`}>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-brand-background/80 backdrop-blur-md border-b border-slate-100 shadow-sm' : 'bg-transparent'}`}>
         <div className="flex items-center justify-between px-6 py-4 w-full">
           <div 
             onClick={() => switchView('home')} 
             className="text-xl font-bold tracking-tight text-brand-on-surface flex items-center gap-2 cursor-pointer"
           >
-            <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-black text-[10px]">AI</div>
+           <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-black text-[10px]">AI</div>
             WhyAnalyst.ai
           </div>
           <div className="hidden md:flex space-x-8">
@@ -612,7 +617,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
 
         {/* Final CTA - Common for all pages */}
         <section className="px-6 py-24 w-full bg-brand-background">
-          <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-12 lg:p-24 rounded-[3rem] text-center text-white relative overflow-hidden shadow-3xl">
+          <div className="bg-brand-background border border-slate-200 p-12 lg:p-24 rounded-[3rem] text-center text-brand-on-surface relative overflow-hidden shadow-3xl">
             <div className="relative z-10 space-y-8 max-w-3xl mx-auto py-8">
               <h2 className="text-5xl lg:text-6xl font-bold leading-tight">Ready to unlock your data's full potential?</h2>
               <p className="text-lg opacity-90 leading-relaxed">
@@ -621,7 +626,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               <div className="pt-8">
                 <button 
                   onClick={onAuth} 
-                  className="bg-white text-blue-600 px-10 py-5 rounded-2xl font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-blue-900/40"
+                  className="bg-brand-primary text-white px-10 py-5 rounded-2xl font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl shadow-brand-primary/20"
                 >
                   Start Your Journey Free
                 </button>
@@ -632,7 +637,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-20 px-6 bg-slate-50 border-t border-slate-200">
+      <footer className="w-full py-20 px-6 bg-brand-background border-t border-slate-200">
         <div className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-12">
           <div className="col-span-2 space-y-6">
             <div className="text-2xl font-bold text-slate-900 flex items-center gap-2">

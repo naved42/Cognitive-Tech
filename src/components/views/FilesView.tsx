@@ -1066,7 +1066,7 @@ export const FilesView = () => {
                  </div>
                </div>
                
-               <button className="w-full py-4 bg-indigo-600 text-white font-bold rounded-2xl shadow-lg shadow-indigo-200 dark:shadow-indigo-900/20 active:scale-[0.98] transition-all">
+               <button className="w-full py-4 bg-brand-primary text-white font-bold rounded-2xl shadow-lg shadow-brand-primary/20 active:scale-[0.98] transition-all">
                  Launch Cleaning Agent
                </button>
             </motion.div>
@@ -1076,4 +1076,3 @@ export const FilesView = () => {
     </div>
   );
 };
-

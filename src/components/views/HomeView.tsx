@@ -155,7 +155,7 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
     { label: 'Excel', icon: TableIcon, color: 'text-green-500', prompt: 'Clean and transform the most recent dataset for optimized analysis. ' },
     { label: 'Slides', icon: Presentation, color: 'text-orange-500', prompt: 'Generate a presentation outline for the data trends observed. ' },
     { label: 'Dashboard', icon: LayoutDashboard, color: 'text-blue-500', prompt: 'Create a high-level KPI dashboard from my data sources. ' },
-    { label: 'Tracker', icon: Target, color: 'text-purple-500', prompt: 'Build a project tracker with status updates for ' },
+    { label: 'Tracker', icon: Target, color: 'text-indigo-500', prompt: 'Build a project tracker with status updates for ' },
     { label: 'Report', icon: FileText, color: 'text-red-500', prompt: 'Compose a professional report summarizing key findings from ' },
   ];
 
@@ -269,19 +269,19 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
         { name: 'Redis', icon: Database, color: 'text-red-500' },
         { name: 'Salesforce', icon: Target, color: 'text-blue-600' },
         { name: 'HubSpot', icon: Target, color: 'text-orange-500' },
-        { name: 'Stripe', icon: Cable, color: 'text-purple-500' },
+        { name: 'Stripe', icon: Cable, color: 'text-indigo-500' },
         { name: 'Shopify', icon: Cable, color: 'text-green-600' },
         { name: 'Zendesk', icon: Headset, color: 'text-blue-400' },
         { name: 'MySQL', icon: Database, color: 'text-blue-500' },
         { name: 'Firebase', icon: Database, color: 'text-amber-500' },
-        { name: 'Slack', icon: MessageSquare, color: 'text-purple-600' }
+        { name: 'Slack', icon: MessageSquare, color: 'text-emerald-600' }
       ],
       tools: [
         { name: 'Python Interpreter', icon: Terminal, color: 'text-yellow-500' },
         { name: 'SQL Runner', icon: Database, color: 'text-slate-500' },
         { name: 'Web Explorer', icon: Search, color: 'text-blue-400' },
         { name: 'Plotly Generator', icon: BarChart, color: 'text-pink-500' },
-        { name: 'Grok AI', icon: Brain, color: 'text-purple-400' },
+        { name: 'Grok AI', icon: Brain, color: 'text-indigo-400' },
         { name: 'Prophet Forecast', icon: TrendingUp, color: 'text-indigo-500' },
         { name: 'Scikit-learn', icon: Construction, color: 'text-sky-500' },
         { name: 'Pandas Profiler', icon: TableIcon, color: 'text-teal-500' },
@@ -305,10 +305,10 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
         { name: 'Fin Modeler', icon: BarChart, color: 'text-amber-500' },
         { name: 'Research Bot', icon: Search, color: 'text-indigo-400' },
         { name: 'Code Reviewer', icon: CheckCircle2, color: 'text-emerald-600' },
-        { name: 'Copywriter', icon: Presentation, color: 'text-purple-500' },
+        { name: 'Copywriter', icon: Presentation, color: 'text-emerald-600' },
         { name: 'Groq LPU', icon: Brain, color: 'text-orange-600' },
         { name: 'Llama 3', icon: Bot, color: 'text-indigo-500' },
-        { name: 'Mixtral', icon: Sparkles, color: 'text-pink-500' }
+        { name: 'Mixtral', icon: Sparkles, color: 'text-amber-500' }
       ]
     };
 

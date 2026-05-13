@@ -32,7 +32,7 @@ export const CommunityView = () => {
             <p className="text-base sm:text-lg text-slate-400 dark:text-indigo-100 font-medium mb-12 leading-relaxed max-w-md">
                 Join our vibrant Slack community to share insights, debug complex agents, and stay updated with the latest in cognitive technology.
             </p>
-            <button className="w-full sm:w-auto bg-white text-slate-900 px-10 py-5 rounded-2xl text-sm font-black hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3 shadow-xl uppercase tracking-widest">
+            <button className="w-full sm:w-auto bg-brand-primary text-white px-10 py-5 rounded-2xl text-sm font-black hover:opacity-90 hover:-translate-y-1 transition-all active:scale-95 flex items-center justify-center gap-3 shadow-xl shadow-brand-primary/20 uppercase tracking-widest">
               <Slack className="w-6 h-6 fill-current" />
               Join Community Slack
             </button>
@@ -146,7 +146,7 @@ export const CommunityView = () => {
               <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=400" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
               <div className="absolute inset-0 bg-slate-900/10 group-hover:bg-transparent transition-colors"></div>
             </div>
-            <button className="bg-slate-900 dark:bg-indigo-600 text-white w-full py-4 rounded-xl font-bold text-xs flex items-center justify-center gap-3 group/btn uppercase tracking-widest active:scale-95 transition-all shadow-xl shadow-black/10">
+            <button className="bg-brand-primary text-white w-full py-4 rounded-xl font-bold text-xs flex items-center justify-center gap-3 group/btn uppercase tracking-widest active:scale-95 transition-all shadow-xl shadow-brand-primary/20">
               Secure Pass 
               <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </button>

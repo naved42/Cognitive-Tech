@@ -16,7 +16,7 @@ const AboutPage = React.lazy(() => import('./components/AboutPage').then(m => ({
 const AuthModal = React.lazy(() => import('./components/auth/AuthModal').then(m => ({ default: m.AuthModal })));
 
 const LoadingFallback = () => (
-  <div className="h-screen w-full flex items-center justify-center bg-white dark:bg-[#050505]">
+  <div className="h-screen w-full flex items-center justify-center bg-brand-background">
     <div className="space-y-4 text-center">
       <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mx-auto" />
       <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">Loading Module...</p>
@@ -143,7 +143,7 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="h-screen w-full flex items-center justify-center bg-white dark:bg-[#050505]">
+      <div className="h-screen w-full flex items-center justify-center bg-brand-background">
         <div className="space-y-4 text-center">
           <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mx-auto" />
           <p className="text-xs font-bold uppercase tracking-widest text-zinc-400">Syncing Intelligence...</p>
@@ -201,7 +201,7 @@ export default function App() {
 
     if (!isEmailVerified) {
       return (
-        <div className="h-screen w-full flex items-center justify-center bg-white dark:bg-[#050505]">
+        <div className="h-screen w-full flex items-center justify-center bg-brand-background">
           <div className="space-y-4 text-center max-w-md p-4">
             <div className="w-16 h-16 bg-blue-500 rounded-2xl mx-auto flex items-center justify-center">
               <Loader2 className="w-8 h-8 text-white animate-spin" />
@@ -212,7 +212,7 @@ export default function App() {
             </p>
             <button
               onClick={() => signOut()}
-              className="mt-6 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-bold transition-colors"
+              className="mt-6 px-4 py-2 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-lg text-sm font-bold transition-colors"
             >
               Sign Out
             </button>

@@ -230,42 +230,42 @@ export const AuthModal = () => {
     }
   };
 
-  const social_btn_style = "w-full h-12 flex items-center justify-center gap-3 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all";
+  const social_btn_style = "w-full h-12 flex items-center justify-center gap-3 bg-brand-background border border-slate-200 rounded-xl text-xs font-bold uppercase tracking-widest text-brand-on-surface hover:bg-brand-primary/10 transition-all";
 
   // Forgot Password screen
   if (forgotPasswordMode) {
     return (
       <div className="w-full max-w-md mx-auto p-4">
-        <div className="bg-white dark:bg-zinc-950 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden p-8">
+        <div className="bg-brand-background rounded-[2.5rem] border border-slate-200 shadow-2xl overflow-hidden p-8">
           <div className="text-center mb-8">
             <button 
               onClick={() => {
                 setForgotPasswordMode(false);
                 setResetEmail('');
               }}
-              className="mb-4 p-2 text-zinc-500 hover:text-indigo-600 transition-colors"
+              className="mb-4 p-2 text-brand-surface-variant hover:text-brand-primary transition-colors"
             >
               <ArrowLeft className="w-5 h-5 mx-auto" />
             </button>
-            <h2 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight mb-2">
+            <h2 className="text-2xl font-black text-brand-on-surface uppercase tracking-tight mb-2">
               Reset Password
             </h2>
-            <p className="text-xs text-zinc-500 font-medium tracking-wide">
+            <p className="text-xs text-brand-surface-variant font-medium tracking-wide">
               Enter your email to receive a reset link
             </p>
           </div>
 
           <form onSubmit={handlePasswordReset} className="space-y-4">
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Email Address</label>
+              <label className="text-[10px] font-bold text-brand-surface-variant uppercase tracking-widest ml-1">Email Address</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-surface-variant" />
                 <input 
                   type="email" 
                   placeholder="name@company.com"
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
-                  className="w-full h-12 pl-10 pr-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full h-12 pl-10 pr-4 bg-brand-background border border-slate-200 rounded-xl text-sm text-brand-on-surface focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
                   required
                 />
               </div>
@@ -274,7 +274,7 @@ export const AuthModal = () => {
             <Button 
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold uppercase tracking-widest text-[10px]"
+              className="w-full h-12 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-xl font-bold uppercase tracking-widest text-[10px]"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -292,22 +292,22 @@ export const AuthModal = () => {
   if (verificationSent) {
     return (
       <div className="w-full max-w-md mx-auto p-4">
-        <div className="bg-white dark:bg-zinc-950 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden p-8">
+        <div className="bg-brand-background rounded-[2.5rem] border border-slate-200 shadow-2xl overflow-hidden p-8">
           <div className="text-center">
             <motion.div 
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               className="w-16 h-16 bg-blue-500 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg shadow-blue-500/20"
             >
-              <Mail className="w-8 h-8 text-white" />
+              <Mail className="w-8 h-8 text-black" />
             </motion.div>
-            <h2 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight mb-4">
+            <h2 className="text-2xl font-black text-brand-on-surface uppercase tracking-tight mb-4">
               Verify Your Email
             </h2>
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-2">
-              We've sent a verification link to <span className="font-bold text-zinc-900 dark:text-white">{pendingEmail}</span>
+            <p className="text-sm text-brand-surface-variant mb-2">
+              We've sent a verification link to <span className="font-bold text-brand-on-surface">{pendingEmail}</span>
             </p>
-            <p className="text-xs text-zinc-500 mb-8">
+            <p className="text-xs text-brand-surface-variant mb-8">
               Check your inbox and spam folder. Click the link in the email to verify your account.
             </p>
             
@@ -315,7 +315,7 @@ export const AuthModal = () => {
               <Button 
                 onClick={handleResendVerification}
                 disabled={loading}
-                className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2"
+                className="w-full h-12 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2"
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />
@@ -327,7 +327,7 @@ export const AuthModal = () => {
               
               <button 
                 onClick={handleSignOutFromVerification}
-                className="w-full h-12 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-900 dark:text-white rounded-xl font-bold uppercase tracking-widest text-[10px] transition-colors"
+                className="w-full h-12 bg-brand-background border border-slate-200 hover:bg-brand-primary/10 text-brand-on-surface rounded-xl font-bold uppercase tracking-widest text-[10px] transition-colors"
               >
                 Sign Out
               </button>
@@ -340,7 +340,7 @@ export const AuthModal = () => {
 
   return (
     <div className="w-full max-w-md mx-auto p-4">
-      <div className="bg-white dark:bg-zinc-950 rounded-[2.5rem] border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden p-8">
+      <div className="bg-brand-background rounded-[2.5rem] border border-slate-200 shadow-2xl overflow-hidden p-8">
         <div className="text-center mb-8">
           {/* Robot with hands overlay */}
           <div className="relative w-20 h-20 mx-auto mb-4 flex items-center justify-center">
@@ -348,10 +348,10 @@ export const AuthModal = () => {
             {/* Hands overlay for password hidden */}
             <RobotHands />
           </div>
-          <h2 className="text-2xl font-black text-zinc-900 dark:text-white uppercase tracking-tight mb-2">
+          <h2 className="text-2xl font-black text-brand-on-surface uppercase tracking-tight mb-2">
             {isLogin ? 'Welcome Back' : 'Create Account'}
           </h2>
-          <p className="text-xs text-zinc-500 font-medium tracking-wide">
+          <p className="text-xs text-brand-surface-variant font-medium tracking-wide">
             {isLogin ? 'Access your intelligence workspace' : 'Join the future of data analysis'}
           </p>
         </div>
@@ -362,14 +362,14 @@ export const AuthModal = () => {
             disabled={loading}
             className={social_btn_style}
           >
-            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Chrome className="w-4 h-4 text-rose-500" />}
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Chrome className="w-4 h-4 text-brand-primary" />}
             Continue with Google
           </button>
 
           <div className="relative flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
-            <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">or email</span>
-            <div className="flex-1 h-px bg-zinc-100 dark:bg-zinc-800" />
+            <div className="flex-1 h-px bg-slate-200" />
+            <span className="text-[10px] font-bold text-brand-surface-variant uppercase tracking-widest">or email</span>
+            <div className="flex-1 h-px bg-slate-200" />
           </div>
 
           <form onSubmit={handleEmailAuth} className="space-y-4">
@@ -383,15 +383,15 @@ export const AuthModal = () => {
                   exit={{ height: 0, opacity: 0 }}
                   className="space-y-1"
                 >
-                  <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Full Name</label>
+                  <label className="text-[10px] font-bold text-brand-surface-variant uppercase tracking-widest ml-1">Full Name</label>
                   <div className="relative">
-                    <UserPlus className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                    <UserPlus className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-surface-variant" />
                     <input 
                       type="text" 
                       placeholder="John Doe"
                       value={displayName}
                       onChange={(e) => setDisplayName(e.target.value)}
-                      className="w-full h-12 pl-10 pr-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                      className="w-full h-12 pl-10 pr-4 bg-brand-background border border-slate-200 rounded-xl text-sm text-brand-on-surface focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
                       required={!isLogin}
                     />
                   </div>
@@ -400,30 +400,30 @@ export const AuthModal = () => {
             </AnimatePresence>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Email Address</label>
+              <label className="text-[10px] font-bold text-brand-surface-variant uppercase tracking-widest ml-1">Email Address</label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-surface-variant" />
                 <input 
                   type="email" 
                   placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full h-12 pl-10 pr-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full h-12 pl-10 pr-4 bg-brand-background border border-slate-200 rounded-xl text-sm text-brand-on-surface focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">Password</label>
+              <label className="text-[10px] font-bold text-brand-surface-variant uppercase tracking-widest ml-1">Password</label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-surface-variant" />
                 <input 
                   type="password" 
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full h-12 pl-10 pr-4 bg-zinc-50 dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  className="w-full h-12 pl-10 pr-4 bg-brand-background border border-slate-200 rounded-xl text-sm text-brand-on-surface focus:outline-none focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary"
                   required
                 />
               </div>
@@ -432,7 +432,7 @@ export const AuthModal = () => {
             <Button 
               type="submit"
               disabled={loading}
-              className="w-full h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold uppercase tracking-widest text-[10px]"
+              className="w-full h-12 bg-brand-primary hover:bg-brand-primary/90 text-white rounded-xl font-bold uppercase tracking-widest text-[10px]"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -445,7 +445,7 @@ export const AuthModal = () => {
           <div className="text-center mt-6">
             <button 
               onClick={() => setIsLogin(!isLogin)}
-              className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest hover:text-indigo-600 transition-colors block w-full mb-3"
+              className="text-[10px] font-bold text-brand-surface-variant uppercase tracking-widest hover:text-brand-primary transition-colors block w-full mb-3"
             >
               {isLogin ? "Don't have an account? Sign Up" : "Already have an account? Sign In"}
             </button>
@@ -453,7 +453,7 @@ export const AuthModal = () => {
             {isLogin && (
               <button 
                 onClick={() => setForgotPasswordMode(true)}
-                className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest hover:text-indigo-600 transition-colors"
+                className="text-[10px] font-bold text-brand-surface-variant uppercase tracking-widest hover:text-brand-primary transition-colors"
               >
                 Forgot Password?
               </button>

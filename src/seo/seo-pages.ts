@@ -21,6 +21,42 @@ export interface SeoPage {
 const BASE_URL = "https://whyanalyst.ai";
 const OG_IMAGE = `${BASE_URL}/assets/og-image.jpg`;
 const CTA_SIGNUP = `${BASE_URL}/`;
+const FOUNDER_NAME = "Muhammad Naveed";
+const FOUNDER_URL = `${BASE_URL}/about`;
+const FOUNDER_SAME_AS = [
+  "https://www.linkedin.com/in/naveedjat/",
+  "https://www.instagram.com/muhammadnaveedjat/",
+  "https://www.threads.com/@muhammadnaveedjat/media",
+];
+
+function founderStructuredData() {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${BASE_URL}/#organization`,
+        name: "WhyAnalyst",
+        url: BASE_URL,
+        logo: `${BASE_URL}/assets/favicon.png`,
+        founder: {
+          "@id": `${BASE_URL}/#founder`,
+        },
+      },
+      {
+        "@type": "Person",
+        "@id": `${BASE_URL}/#founder`,
+        name: FOUNDER_NAME,
+        jobTitle: "Founder",
+        url: FOUNDER_URL,
+        worksFor: {
+          "@id": `${BASE_URL}/#organization`,
+        },
+        sameAs: FOUNDER_SAME_AS,
+      },
+    ],
+  }, null, 2);
+}
 
 function cta(label = "Try WhyAnalyst Free →") {
   return `<div class="cta-block">
@@ -676,6 +712,11 @@ export function renderSeoPage(page: SeoPage): string {
       "url": "https://whyanalyst.ai"
     }
   }
+  </script>
+
+  <!-- Structured Data: Organization + Founder -->
+  <script type="application/ld+json">
+  ${founderStructuredData()}
   </script>
 
   <!-- Structured Data: SoftwareApplication -->

@@ -109,7 +109,7 @@ export const DatabasesView = ({ onNavigate }: DatabasesViewProps) => {
             <div className="flex flex-wrap items-center gap-3">
               <button className="flex-1 sm:flex-none text-xs font-bold px-4 py-2 border border-slate-200 dark:border-zinc-800 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors dark:text-zinc-300">Manage Schema</button>
               <button className="flex-1 sm:flex-none text-xs font-bold px-4 py-2 border border-slate-200 dark:border-zinc-800 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 transition-colors dark:text-zinc-300">Sync History</button>
-              <button className="w-full sm:w-auto text-xs font-bold px-6 py-2 bg-slate-900 dark:bg-indigo-600 text-white rounded-xl ml-auto hover:bg-black dark:hover:bg-indigo-700 transition-all shadow-md">Trigger Sync</button>
+              <button className="w-full sm:w-auto text-xs font-bold px-6 py-2 bg-brand-primary text-white rounded-xl ml-auto hover:bg-brand-primary/90 transition-all shadow-md">Trigger Sync</button>
             </div>
           </div>
         </div>
