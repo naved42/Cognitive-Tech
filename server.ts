@@ -595,6 +595,11 @@ async function startServer() {
     }));
     
     // Serve other static files normally
+    // Do not serve sitemap from backend — redirect to frontend-hosted sitemap on Vercel
+    app.get('/sitemap.xml', (req, res) => {
+      res.redirect(301, 'https://whyanalyst.vercel.app/sitemap.xml');
+    });
+
     app.use(express.static(distPath));
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
