@@ -50,6 +50,18 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
     { name: 'Data Scientist AI', role: 'Advanced Analytics', Icon: BarChart },
   ];
 
+  // Instagram tech influencers to feature in a separate marquee
+  const instagramInfluencers: Array<{
+    name: string;
+    handle: string;
+    url: string;
+  }> = [
+    { name: 'Lex Fridman', handle: '@lexfridman', url: 'https://www.instagram.com/lexfridman/' },
+    { name: 'Andrej Karpathy', handle: '@andrejkarpathy', url: 'https://www.instagram.com/karpathy/' },
+    { name: 'Rachel Thomas', handle: '@math_rachel', url: 'https://www.instagram.com/math_rachel/' },
+    { name: 'Sebastian Raschka', handle: '@rasbt', url: 'https://www.instagram.com/rasbt/' },
+    { name: 'Yann LeCun', handle: '@yann.lecun', url: 'https://www.instagram.com/yann.lecun/' },
+  ];
 
 
   const switchView = (view: 'home' | 'pricing' | 'resources' | 'contact') => {
@@ -82,18 +94,20 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
           <p className="hero-text text-base sm:text-lg lg:text-xl text-brand-surface-variant max-w-2xl mx-auto leading-relaxed">
             Chat with CSV and Excel files using AI. Ask questions in plain English and get charts, insights, and reports in seconds.
           </p>
-          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4 pt-4 w-full">
             <button 
               type="button"
+              aria-label="Start analyzing free"
               onClick={onAuth} 
-              className="w-full sm:w-auto inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-brand-primary px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-white shadow-xl shadow-brand-primary/30 transition-all hover:-translate-y-1 active:scale-95"
+              className="w-full sm:w-auto inline-flex items-center justify-center whitespace-nowrap rounded-xl bg-brand-primary px-4 sm:px-8 py-2 sm:py-4 min-h-[40px] sm:min-h-[56px] text-sm sm:text-lg font-bold text-white shadow-xl shadow-brand-primary/30 transition-all hover:-translate-y-1 active:scale-95"
             >
               Start Analyzing Free
             </button>
             <button
               type="button"
+              aria-label="View live demo"
               onClick={onAuth}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-brand-primary/20 bg-brand-background px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-bold text-brand-primary shadow-sm transition-all hover:border-brand-primary/30 hover:bg-brand-primary/10 active:scale-95 group"
+              className="w-full sm:w-auto mt-2 sm:mt-0 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl border-2 border-brand-primary/20 bg-brand-background px-4 sm:px-8 py-2 sm:py-4 min-h-[40px] sm:min-h-[56px] text-sm sm:text-lg font-bold text-brand-primary shadow-sm transition-all hover:border-brand-primary/30 hover:bg-brand-primary/10 active:scale-95 group"
             >
               View Live Demo
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -104,38 +118,78 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
 
       {/* AI Workforce Marquee */}
       <section className="px-0 sm:px-2 lg:px-4 -mt-3 sm:-mt-5">
-        <div className="relative overflow-hidden border-y border-slate-200/80 bg-brand-background py-10 sm:py-12">
+        <div className="relative overflow-hidden border-y border-slate-200/80 bg-brand-background py-8 sm:py-12">
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 sm:w-32 bg-gradient-to-r from-brand-background to-transparent" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 sm:w-32 bg-gradient-to-l from-brand-background to-transparent" />
 
-          <div className="ai-marquee group overflow-hidden">
+          {/* Desktop Marquee (animated) */}
+          <div className="hidden sm:block ai-marquee group overflow-hidden">
             <div className="ai-marquee-track flex w-max items-center gap-4 sm:gap-6 px-4 sm:px-6">
               {[...aiWorkforceCards, ...aiWorkforceCards].map((card, index) => {
-                const Icon = card.Icon;
+                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(card.name)}&background=E9D5FF&color=7C3AED`;
+                const shortName = card.name.split(' ')[0];
+                const shortHandle = `@${shortName.toLowerCase().replace(/\W+/g, '')}`;
                 return (
-                  <article
-                    key={`${card.name}-${index}`}
-                    className="ai-marquee-card w-[180px] sm:w-[200px] rounded-2xl border border-slate-200/90 bg-brand-background p-4 sm:p-5 text-center backdrop-blur-xl transition-all duration-300"
-                  >
-                    <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full border border-indigo-300/30 bg-gradient-to-br from-indigo-500/25 to-emerald-500/25 shadow-[0_0_22px_rgba(99,102,241,0.30)]">
-                      <Icon className="h-6 w-6 text-brand-on-surface" />
-                    </div>
-
-                    <div className="space-y-1">
-                      <p className="text-sm sm:text-base font-semibold text-brand-on-surface">{card.name}</p>
-                      <p className="text-xs text-brand-surface-variant">{card.role}</p>
-                    </div>
-
-                    <div className="mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1">
-                      <span className="relative flex h-2 w-2">
-                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
-                        <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-300" />
-                      </span>
-                      <span className="text-[11px] font-medium tracking-wide text-emerald-700">Online</span>
-                    </div>
+                  <article key={`${card.name}-${index}`} className="ai-marquee-card rounded-2xl bg-transparent p-3 sm:p-4 flex flex-col items-center text-center transition-transform">
+                    <img src={avatarUrl} alt={card.name} loading="lazy" className="w-12 h-12 rounded-full object-cover mb-3" onError={(e) => { (e.currentTarget as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(shortName)}&background=6366f1&color=fff`; }} />
+                    <div className="text-sm sm:text-base font-bold text-brand-on-surface">{shortName}</div>
+                    <div className="text-xs sm:text-sm text-slate-500">{shortHandle}</div>
                   </article>
                 );
               })}
+            </div>
+          </div>
+
+          {/* Mobile auto-scrolling marquee */}
+          <div className="sm:hidden ai-marquee group overflow-hidden">
+            <div className="ai-marquee-track flex w-max items-center gap-4 px-4">
+              {[...aiWorkforceCards, ...aiWorkforceCards].map((card, index) => {
+                const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(card.name)}&background=E9D5FF&color=7C3AED`;
+                const handle = `@${card.name.split(' ')[0].toLowerCase().replace(/\W+/g, '')}`;
+                return (
+                  <article key={`${card.name}-${index}`} className="flex-shrink-0 rounded-2xl bg-transparent p-2 text-center">
+                    <img src={avatarUrl} alt={card.name} loading="lazy" className="w-10 h-10 rounded-full object-cover mb-2" onError={(e) => { (e.currentTarget as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(card.name)}&background=6366f1&color=fff`; }} />
+                    <p className="text-sm font-semibold text-brand-on-surface">{card.name}</p>
+                    <p className="text-xs text-brand-surface-variant">{handle}</p>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Instagram Influencers Marquee */}
+          <div className="mt-6">
+            <div className="w-full max-w-6xl mx-auto px-4 sm:px-6">
+              <h3 className="text-center text-lg font-bold text-brand-on-surface mb-4">Tech influencers on Instagram</h3>
+              <div className="ai-marquee group overflow-hidden">
+                <div className="ai-marquee-track flex w-max items-center gap-4 px-4 sm:px-6">
+                  {[...instagramInfluencers, ...instagramInfluencers].map((inf, i) => {
+                    const shortName = inf.name.split(' ')[0];
+                    const handlePart = inf.handle.replace('@','').split(/\.|_|-|\s/)[0];
+                    const shortHandle = `@${handlePart}`;
+                    return (
+                    <a
+                      key={`${inf.handle}-${i}`}
+                      href={inf.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="ai-marquee-card rounded-2xl bg-transparent p-3 sm:p-4 flex flex-col items-center text-center transition-transform"
+                    >
+                      <img
+                        src={`https://unavatar.io/instagram/${inf.handle.replace('@','')}`}
+                        alt={inf.name}
+                        loading="lazy"
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover mb-3"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(shortName)}&background=6366f1&color=fff`; }}
+                      />
+
+                      <div className="text-sm sm:text-base font-bold text-brand-on-surface">{shortName}</div>
+                      <div className="text-xs sm:text-sm text-slate-500">{shortHandle}</div>
+                    </a>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -550,6 +604,8 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
            <div className="w-8 h-8 rounded-lg bg-brand-primary flex items-center justify-center text-white font-black text-[10px]">AI</div>
             WhyAnalyst.ai
           </div>
+
+          {/* Desktop nav */}
           <div className="hidden md:flex space-x-8">
             <button 
               onClick={() => switchView('home')}
@@ -582,6 +638,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
               Contact
             </button>
           </div>
+
           <div className="flex items-center gap-4">
             <button 
               onClick={onAuth} 
@@ -597,6 +654,7 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
             </button>
           </div>
         </div>
+
       </nav>
 
       <main className="pt-24 overflow-x-hidden">
@@ -647,44 +705,25 @@ export const LandingPage = ({ onAuth }: LandingPageProps) => {
             <p className="text-slate-600 max-w-xs leading-relaxed">
               Automating data analysis for enterprise teams. Unlock insights from millions of data points across any industry.
             </p>
-            <div className="flex gap-4">
-              <a
-                href="https://github.com/naved42"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub profile"
-                title="GitHub"
-              >
-                <Github className="w-5 h-5 text-slate-500 hover:text-brand-primary transition-colors" />
-              </a>
-              <a
-                href="https://www.threads.com/@muhammadnaveedjat/media"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Threads profile"
-                title="Threads"
-              >
-                <AtSign className="w-5 h-5 text-slate-500 hover:text-brand-primary transition-colors" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/naveedjat/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn profile"
-                title="LinkedIn"
-              >
-                <Linkedin className="w-5 h-5 text-slate-500 hover:text-brand-primary transition-colors" />
-              </a>
-              <a
-                href="https://www.instagram.com/muhammadnaveedjat/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram profile"
-                title="Instagram"
-              >
-                <Instagram className="w-5 h-5 text-slate-500 hover:text-brand-primary transition-colors" />
-              </a>
-              <Mail className="w-5 h-5 text-slate-500 cursor-pointer hover:text-brand-primary transition-colors" />
+
+            <div className="mt-2">
+              <p className="font-bold text-sm">Contact</p>
+              <p className="text-sm">Muhammad Naveed</p>
+              <a href="mailto:naved.jatt.42@gmail.com" className="block text-slate-600 hover:text-brand-primary transition-colors">naved.jatt.42@gmail.com</a>
+              <div className="flex gap-4 mt-3">
+                <a href="https://www.linkedin.com/in/naveedjat/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                  <Linkedin className="w-5 h-5 text-slate-500 hover:text-brand-primary transition-colors" />
+                </a>
+                <a href="https://www.instagram.com/muhammadnaveedjat/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  <Instagram className="w-5 h-5 text-slate-500 hover:text-brand-primary transition-colors" />
+                </a>
+                <a href="https://github.com/naved42" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                  <Github className="w-5 h-5 text-slate-500 hover:text-brand-primary transition-colors" />
+                </a>
+                <a href="https://www.threads.com/@muhammadnaveedjat/media" target="_blank" rel="noopener noreferrer" aria-label="Threads">
+                  <AtSign className="w-5 h-5 text-slate-500 hover:text-brand-primary transition-colors" />
+                </a>
+              </div>
             </div>
           </div>
           <div className="flex flex-col gap-4">

@@ -6,7 +6,8 @@ Disallow: /admin/
 Disallow: /dashboard/
 Disallow: /api/
 Disallow: /auth/
-Disallow: /*?*
+Disallow: /*?utm_
+Disallow: /*?ref=
 
 # Sitemaps
 Sitemap: https://whyanalyst.vercel.app/sitemap.xml

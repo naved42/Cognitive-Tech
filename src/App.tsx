@@ -13,6 +13,10 @@ const LazyToaster = React.lazy(() => import('sonner').then(m => ({ default: m.To
 const Workspace = React.lazy(() => import('./components/Workspace').then(m => ({ default: m.Workspace })));
 const LandingPage = React.lazy(() => import('./components/LandingPage').then(m => ({ default: m.LandingPage })));
 const AboutPage = React.lazy(() => import('./components/AboutPage').then(m => ({ default: m.AboutPage })));
+const FeaturesPage = React.lazy(() => import('./components/FeaturesPage').then(m => ({ default: m.FeaturesPage })));
+const PricingPage = React.lazy(() => import('./components/PricingPage').then(m => ({ default: m.PricingPage })));
+const ContactPage = React.lazy(() => import('./components/ContactPage').then(m => ({ default: m.ContactPage })));
+const BlogPage = React.lazy(() => import('./components/BlogPage').then(m => ({ default: m.BlogPage })));
 const AuthModal = React.lazy(() => import('./components/auth/AuthModal').then(m => ({ default: m.AuthModal })));
 
 const LoadingFallback = () => (
@@ -33,7 +37,7 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showSearch, setShowSearch] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'landing' | 'about'>('landing');
+  const [currentPage, setCurrentPage] = useState<'landing' | 'about' | 'features' | 'pricing' | 'contact' | 'blog'>('landing');
   
   // Data State
   const [activeDatasetId, setActiveDatasetId] = useState<string | null>(null);
@@ -50,6 +54,14 @@ export default function App() {
       const path = window.location.pathname;
       if (path === '/about') {
         setCurrentPage('about');
+      } else if (path === '/features') {
+        setCurrentPage('features');
+      } else if (path === '/pricing') {
+        setCurrentPage('pricing');
+      } else if (path === '/contact') {
+        setCurrentPage('contact');
+      } else if (path === '/blog') {
+        setCurrentPage('blog');
       } else {
         setCurrentPage('landing');
       }
@@ -106,9 +118,16 @@ export default function App() {
     }
   }, []);
 
-  const handleNavigate = useCallback((page: 'landing' | 'about') => {
-    const path = page === 'about' ? '/about' : '/';
-    window.history.pushState({}, '', path);
+  const handleNavigate = useCallback((page: 'landing' | 'about' | 'features' | 'pricing' | 'contact' | 'blog') => {
+    const pathMap = {
+      landing: '/',
+      about: '/about',
+      features: '/features',
+      pricing: '/pricing',
+      contact: '/contact',
+      blog: '/blog',
+    };
+    window.history.pushState({}, '', pathMap[page]);
     setCurrentPage(page);
   }, []);
 
@@ -158,9 +177,17 @@ export default function App() {
         <div className="light">
           <React.Suspense fallback={<LoadingFallback />}>
             {currentPage === 'about' ? (
-              <AboutPage onAuth={handleAuthOverlayOpen} />
+              <AboutPage onAuth={handleAuthOverlayOpen} onNavigate={handleNavigate} />
+            ) : currentPage === 'features' ? (
+              <FeaturesPage onAuth={handleAuthOverlayOpen} onNavigate={handleNavigate} />
+            ) : currentPage === 'pricing' ? (
+              <PricingPage onAuth={handleAuthOverlayOpen} onNavigate={handleNavigate} />
+            ) : currentPage === 'contact' ? (
+              <ContactPage onAuth={handleAuthOverlayOpen} onNavigate={handleNavigate} />
+            ) : currentPage === 'blog' ? (
+              <BlogPage onAuth={handleAuthOverlayOpen} onNavigate={handleNavigate} />
             ) : (
-              <LandingPage onAuth={handleAuthOverlayOpen} />
+              <LandingPage onAuth={handleAuthOverlayOpen} onNavigate={handleNavigate} />
             )}
             <AnimatePresence mode="wait">
               {showAuthOverlay && (

@@ -57,6 +57,7 @@ const HistoryView = React.lazy(() => import('./views/HistoryView').then(m => ({ 
 
 import { ReactLenis } from 'lenis/react';
 const InteractiveRobot = React.lazy(() => import('./InteractiveRobot').then(m => ({ default: m.InteractiveRobot })));
+import MobileBottomNav from './MobileBottomNav';
 
 interface WorkspaceProps {
   user: any;
@@ -149,6 +150,16 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Prevent background scrolling when the mobile menu is open
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
+    }
+    return () => {
+      if (typeof document !== 'undefined') document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -700,6 +711,13 @@ export const Workspace = ({ user, onLogout }: WorkspaceProps) => {
             />
           )}
         </AnimatePresence>
+
+        {/* Mobile Bottom Navigation */}
+        <MobileBottomNav 
+          active={activeView}
+          onNavigate={(view) => { setActiveView(view as any); setIsMobileMenuOpen(false); }}
+          onOpenMenu={() => setIsMobileMenuOpen(true)}
+        />
       </main>
 
       {/* Floating Robot Assistant with Screen Constraints */}

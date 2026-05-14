@@ -1,71 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <!-- Core Pages -->
-  <url><loc>https://whyanalyst.vercel.app/</loc><lastmod>2026-05-09</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/features</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/pricing</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/about</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/contact</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
-
-  <!-- SaaS Keyword Pages -->
-  <url><loc>https://whyanalyst.vercel.app/ai-data-analyst</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/chat-with-data</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/ai-data-analysis-tool</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/no-code-data-analysis</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/ai-data-insights-generator</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/csv-ai-analyzer</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/excel-ai-assistant</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/data-analytics-ai-tool</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/automated-data-analysis</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/business-intelligence-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-
-  <!-- Competitor / Alternative Pages -->
-  <url><loc>https://whyanalyst.vercel.app/julius-ai-alternative</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/chatgpt-data-analysis-alternative</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/best-ai-data-analysis-tools</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/ai-tools-like-julius-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/ai-spreadsheet-tools</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/data-analysis-tools-comparison</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/best-ai-analyst-tools-2026</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/no-code-analytics-tools</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-
-  <!-- Use Case Pages -->
-  <url><loc>https://whyanalyst.vercel.app/analyze-sales-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-marketing-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-financial-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-ecommerce-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-customer-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-website-analytics-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-excel-files-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-csv-files-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-business-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-hr-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-inventory-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-saas-metrics-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-social-media-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/analyze-survey-data-ai</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/ai-dashboard-generator</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-
-  <!-- Blog Pages -->
-  <url><loc>https://whyanalyst.vercel.app/blog/how-to-analyze-data-without-coding</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/best-ai-data-analysis-tools</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/julius-ai-vs-chatgpt</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/can-ai-analyze-excel-data</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/how-to-use-ai-for-data-analysis</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/ai-for-business-intelligence</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/no-code-data-analysis-guide</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/chat-with-your-data-explained</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/ai-vs-traditional-data-analysis</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/what-is-ai-data-analyst</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/automated-data-analysis-tools</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.75</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/blog/future-of-data-analytics-ai</loc><lastmod>2026-05-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-
-  <!-- Comparison Pages -->
-  <url><loc>https://whyanalyst.vercel.app/julius-ai-vs-whyanalyst</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/whyanalyst-vs-chatgpt</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/whyanalyst-vs-power-bi</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/whyanalyst-vs-tableau</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-  <url><loc>https://whyanalyst.vercel.app/best-ai-data-tools-comparison</loc><lastmod>2026-05-09</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
-
+  <!-- Public Pages -->
+  <url><loc>https://whyanalyst.vercel.app/</loc><lastmod>2026-05-14</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://whyanalyst.vercel.app/about</loc><lastmod>2026-05-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whyanalyst.vercel.app/features</loc><lastmod>2026-05-14</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://whyanalyst.vercel.app/pricing</loc><lastmod>2026-05-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://whyanalyst.vercel.app/contact</loc><lastmod>2026-05-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://whyanalyst.vercel.app/blog</loc><lastmod>2026-05-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
