@@ -92,7 +92,7 @@ export const LandingPage = ({ onAuth, onNavigate = () => {} }: LandingPageProps)
       duration = video.duration || 0;
       // pause so scroll controls playback
       video.pause();
-      video.currentTime = 0;
+      onScroll();
     };
 
     const onScroll = () => {
@@ -134,6 +134,7 @@ export const LandingPage = ({ onAuth, onNavigate = () => {} }: LandingPageProps)
           <video
                       ref={videoRef}
                       src={heroVideo}
+                      poster="/hero-robot.png"
                       className="w-full h-full object-cover"
                       playsInline
                       muted
