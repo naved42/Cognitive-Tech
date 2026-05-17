@@ -1110,7 +1110,6 @@ export const HomeView = ({ initialPrompt, onClearPrompt }: HomeViewProps) => {
         </div>
       </div>
     );
-  }
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 py-8 sm:py-20 flex flex-col h-full overflow-y-auto w-full">
