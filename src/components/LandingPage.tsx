@@ -25,7 +25,6 @@ import {
   LineChart,
 } from 'lucide-react';
 import { Button } from './ui/button';
-import heroVideo from '../../assets/video/Dashboard_drifting_on_rain_gutter_202605170838.mp4';
 
 
 
@@ -71,9 +70,6 @@ export const LandingPage = ({ onAuth, onNavigate = () => {} }: LandingPageProps)
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const heroRef = React.useRef<HTMLElement | null>(null);
-  const videoRef = React.useRef<HTMLVideoElement | null>(null);
-
   React.useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -82,69 +78,10 @@ export const LandingPage = ({ onAuth, onNavigate = () => {} }: LandingPageProps)
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  React.useEffect(() => {
-    const video = videoRef.current;
-    const hero = heroRef.current;
-    if (!video || !hero) return;
-    let duration = 0;
-
-    const onLoaded = () => {
-      duration = video.duration || 0;
-      // pause so scroll controls playback
-      video.pause();
-      onScroll();
-    };
-
-    const onScroll = () => {
-      const rect = hero.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      // visible progress where 0 = hero fully below viewport, 1 = hero fully above
-      const visible = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + rect.height), 0), 1);
-      if (duration > 0) {
-        try {
-          video.currentTime = visible * duration;
-        } catch (err) {
-          // some browsers may throw if setting currentTime too early; ignore
-        }
-      }
-    };
-
-    video.addEventListener('loadedmetadata', onLoaded);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-
-    // initial sync
-    onScroll();
-
-    return () => {
-      video.removeEventListener('loadedmetadata', onLoaded);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
-  }, []);
-
-
-
   const renderHome = () => (
     <>
-      {/* Hero Section - Desktop Optimized (with video background) */}
-      <section ref={heroRef} className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 xl:py-32 w-full flex items-center justify-center relative max-w-7xl mx-auto">
-        {/* Video background - bundled from the repo asset folder */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <video
-                      ref={videoRef}
-                      src={heroVideo}
-                      poster="/hero-robot.png"
-                      className="w-full h-full object-cover"
-                      playsInline
-                      muted
-            preload="auto"
-            aria-hidden="true"
-          />
-          {/* subtle overlay to preserve text contrast */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/5" />
-        </div>
-
+      {/* Hero Section - Desktop Optimized */}
+      <section className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 xl:py-32 w-full flex items-center justify-center relative max-w-7xl mx-auto">
         <div className="w-full max-w-3xl space-y-6 sm:space-y-8 text-center relative z-10">
           <div className="mx-auto inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
             <Sparkles className="w-3.5 h-3.5" />
