@@ -34,6 +34,35 @@ interface LandingPageProps {
 }
 
 export const LandingPage = ({ onAuth, onNavigate = () => {} }: LandingPageProps) => {
+  // --- Scroll scrub video refs ---
+  const heroRef = React.useRef<HTMLDivElement>(null);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const hero = heroRef.current;
+      const video = videoRef.current;
+      if (!hero || !video) return;
+      const rect = hero.getBoundingClientRect();
+      const windowH = window.innerHeight || document.documentElement.clientHeight;
+      // Calculate how much of the hero section is visible
+      const visible = Math.max(0, Math.min(rect.bottom, windowH) - Math.max(rect.top, 0));
+      const percent = visible / rect.height;
+      // Clamp percent between 0 and 1
+      const clamped = Math.max(0, Math.min(1, percent));
+      // Scrub video time
+      video.currentTime = clamped * (video.duration || 1);
+    };
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
+    // Initial scrub
+    setTimeout(handleScroll, 100);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
+
   const [currentView, setCurrentView] = React.useState<'home' | 'pricing' | 'resources' | 'contact'>('home');
   const [isScrolled, setIsScrolled] = React.useState(false);
   const aiWorkforceCards: Array<{
@@ -70,6 +99,9 @@ export const LandingPage = ({ onAuth, onNavigate = () => {} }: LandingPageProps)
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const heroRef = React.useRef<HTMLElement | null>(null);
+  const videoRef = React.useRef<HTMLVideoElement | null>(null);
+
   React.useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -78,20 +110,61 @@ export const LandingPage = ({ onAuth, onNavigate = () => {} }: LandingPageProps)
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  React.useEffect(() => {
+    const video = videoRef.current;
+    const hero = heroRef.current;
+    if (!video || !hero) return;
+    let duration = 0;
+
+    const onLoaded = () => {
+      duration = video.duration || 0;
+      // pause so scroll controls playback
+      video.pause();
+      video.currentTime = 0;
+    };
+
+    const onScroll = () => {
+      const rect = hero.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      // visible progress where 0 = hero fully below viewport, 1 = hero fully above
+      const visible = Math.min(Math.max((windowHeight - rect.top) / (windowHeight + rect.height), 0), 1);
+      if (duration > 0) {
+        try {
+          video.currentTime = visible * duration;
+        } catch (err) {
+          // some browsers may throw if setting currentTime too early; ignore
+        }
+      }
+    };
+
+    video.addEventListener('loadedmetadata', onLoaded);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+
+    // initial sync
+    onScroll();
+
+    return () => {
+      video.removeEventListener('loadedmetadata', onLoaded);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, []);
+
 
 
   const renderHome = () => (
     <>
       {/* Hero Section - Desktop Optimized (with video background) */}
-      <section className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 xl:py-32 w-full flex items-center justify-center relative max-w-7xl mx-auto">
+      <section ref={heroRef} className="px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-12 sm:py-16 lg:py-24 xl:py-32 w-full flex items-center justify-center relative max-w-7xl mx-auto">
         {/* Video background - place your video at public/assets/videos/whyanalyst-hero.webm */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <video
-            src="/assets/videos/whyanalyst-hero.webm"
-            className="w-full h-full object-cover"
-            playsInline
-            muted
-            autoPlay
+                      ref={videoRef}
+                      src="/assets/videos/whyanalyst-hero.webm"
+                      className="w-full h-full object-cover"
+                      playsInline
+                      muted
             preload="auto"
             aria-hidden="true"
           />
